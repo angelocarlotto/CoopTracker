@@ -1,0 +1,66 @@
+@model IEnumerable<CoopTracker.Trackee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAppliation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocumentProvided)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateAppliation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentProvided)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TrackeeId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TrackeeId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TrackeeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

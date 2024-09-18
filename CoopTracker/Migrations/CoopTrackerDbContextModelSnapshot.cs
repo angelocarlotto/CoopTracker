@@ -22,7 +22,63 @@ namespace CoopTracker.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CoopTracker.CoopTrackerDbContext+Student", b =>
+            modelBuilder.Entity("CoopTracker.Data.GroupKeyMaster", b =>
+                {
+                    b.Property<int>("GroupKeyMasterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupKeyMasterId"));
+
+                    b.Property<string>("HashGroup")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GroupKeyMasterId");
+
+                    b.ToTable("GroupKeyMaster");
+                });
+
+            modelBuilder.Entity("CoopTracker.ProffApply", b =>
+                {
+                    b.Property<int>("ProffApplyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProffApplyId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GroupKeyMasterId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("TrackeeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProffApplyId");
+
+                    b.HasIndex("GroupKeyMasterId");
+
+                    b.HasIndex("TrackeeId");
+
+                    b.ToTable("ProffApplys");
+                });
+
+            modelBuilder.Entity("CoopTracker.Student", b =>
                 {
                     b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd()
@@ -38,6 +94,9 @@ namespace CoopTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GroupKeyMasterId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -48,10 +107,12 @@ namespace CoopTracker.Migrations
 
                     b.HasKey("StudentId");
 
+                    b.HasIndex("GroupKeyMasterId");
+
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("CoopTracker.CoopTrackerDbContext+Trackee", b =>
+            modelBuilder.Entity("CoopTracker.Trackee", b =>
                 {
                     b.Property<int>("TrackeeId")
                         .ValueGeneratedOnAdd()
@@ -74,6 +135,9 @@ namespace CoopTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GroupKeyMasterId")
+                        .HasColumnType("int");
+
                     b.Property<string>("JobTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -90,6 +154,8 @@ namespace CoopTracker.Migrations
 
                     b.HasKey("TrackeeId");
 
+                    b.HasIndex("GroupKeyMasterId");
+
                     b.HasIndex("StudentId");
 
                     b.HasIndex("TrackerId");
@@ -97,7 +163,7 @@ namespace CoopTracker.Migrations
                     b.ToTable("Trackees");
                 });
 
-            modelBuilder.Entity("CoopTracker.CoopTrackerDbContext+Tracker", b =>
+            modelBuilder.Entity("CoopTracker.Tracker", b =>
                 {
                     b.Property<int>("TrackerId")
                         .ValueGeneratedOnAdd()
@@ -105,8 +171,15 @@ namespace CoopTracker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrackerId"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupKeyMasterId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
@@ -116,10 +189,12 @@ namespace CoopTracker.Migrations
 
                     b.HasKey("TrackerId");
 
+                    b.HasIndex("GroupKeyMasterId");
+
                     b.ToTable("Trackers");
                 });
 
-            modelBuilder.Entity("CoopTracker.CoopTrackerDbContext+TrackerDetail", b =>
+            modelBuilder.Entity("CoopTracker.TrackerDetail", b =>
                 {
                     b.Property<int>("TrackerDetailId")
                         .ValueGeneratedOnAdd()
@@ -142,6 +217,10 @@ namespace CoopTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GroupKeyMaster")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("JobTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -159,31 +238,96 @@ namespace CoopTracker.Migrations
                     b.ToTable("TrackerDetails");
                 });
 
-            modelBuilder.Entity("CoopTracker.CoopTrackerDbContext+Trackee", b =>
+            modelBuilder.Entity("CoopTracker.ProffApply", b =>
                 {
-                    b.HasOne("CoopTracker.CoopTrackerDbContext+Student", "Student")
+                    b.HasOne("CoopTracker.Data.GroupKeyMaster", "GroupKeyMaster")
+                        .WithMany("ProffApply")
+                        .HasForeignKey("GroupKeyMasterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CoopTracker.Trackee", "Trackee")
+                        .WithMany("ProffApply")
+                        .HasForeignKey("TrackeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GroupKeyMaster");
+
+                    b.Navigation("Trackee");
+                });
+
+            modelBuilder.Entity("CoopTracker.Student", b =>
+                {
+                    b.HasOne("CoopTracker.Data.GroupKeyMaster", "GroupKeyMaster")
+                        .WithMany("Student")
+                        .HasForeignKey("GroupKeyMasterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("GroupKeyMaster");
+                });
+
+            modelBuilder.Entity("CoopTracker.Trackee", b =>
+                {
+                    b.HasOne("CoopTracker.Data.GroupKeyMaster", "GroupKeyMaster")
+                        .WithMany("Trackee")
+                        .HasForeignKey("GroupKeyMasterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CoopTracker.Student", "Student")
                         .WithMany("Trackee")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoopTracker.CoopTrackerDbContext+Tracker", "Tracker")
+                    b.HasOne("CoopTracker.Tracker", "Tracker")
                         .WithMany("Trackee")
                         .HasForeignKey("TrackerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("GroupKeyMaster");
 
                     b.Navigation("Student");
 
                     b.Navigation("Tracker");
                 });
 
-            modelBuilder.Entity("CoopTracker.CoopTrackerDbContext+Student", b =>
+            modelBuilder.Entity("CoopTracker.Tracker", b =>
+                {
+                    b.HasOne("CoopTracker.Data.GroupKeyMaster", "GroupKeyMaster")
+                        .WithMany("Tracker")
+                        .HasForeignKey("GroupKeyMasterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("GroupKeyMaster");
+                });
+
+            modelBuilder.Entity("CoopTracker.Data.GroupKeyMaster", b =>
+                {
+                    b.Navigation("ProffApply");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Trackee");
+
+                    b.Navigation("Tracker");
+                });
+
+            modelBuilder.Entity("CoopTracker.Student", b =>
                 {
                     b.Navigation("Trackee");
                 });
 
-            modelBuilder.Entity("CoopTracker.CoopTrackerDbContext+Tracker", b =>
+            modelBuilder.Entity("CoopTracker.Trackee", b =>
+                {
+                    b.Navigation("ProffApply");
+                });
+
+            modelBuilder.Entity("CoopTracker.Tracker", b =>
                 {
                     b.Navigation("Trackee");
                 });

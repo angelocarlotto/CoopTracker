@@ -1,9 +1,157 @@
-﻿@{
+﻿@model IndexModel;
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
 
+<h1>GroupKeyMasters</h1>
+
+<p>
+    <a  asp-controller="GroupKeyMaster" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("HashGroup")
+            </th>
+            <th>
+                Selected?
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.GroupKeyMasters)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HashGroup)
+                </td>
+                <td>
+                    @(HttpContextAccessor.HttpContext.Session.GetInt32("groupkey") != null&& item.GroupKeyMasterId ==HttpContextAccessor.HttpContext.Session.GetInt32("groupkey") ? "Yes":"--")
+                </td>
+                <td>
+                    <a asp-controller="GroupKeyMaster" asp-action="Select" asp-route-id="@item.GroupKeyMasterId">Select</a> |
+                    <a  asp-controller="GroupKeyMaster"  asp-action="Edit" asp-route-id="@item.GroupKeyMasterId">Edit</a> |
+                    <a asp-controller="GroupKeyMaster"  asp-action="Details" asp-route-id="@item.GroupKeyMasterId">Details</a> |
+                    <a asp-controller="GroupKeyMaster"  asp-action="Delete" asp-route-id="@item.GroupKeyMasterId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<h1>Student</h1>
+
+<p>
+    <a  asp-controller="Student" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("StudentGeorgianCoolegeId")
+            </th>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("FirstName")
+            </th>
+            <th>
+                @Html.DisplayName("LastName")
+            </th>
+            <th>Selected?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Students)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentGeorgianCoolegeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @(HttpContextAccessor.HttpContext.Session.GetInt32("studentId") != null&& item.StudentId ==HttpContextAccessor.HttpContext.Session.GetInt32("studentId") ? "Yes":"--")
+                </td>
+                <td>
+                    <a asp-controller="Student" asp-action="Select" asp-route-id="@item.StudentId">Select</a> |
+                    <a  asp-controller="Student" asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
+                    <a  asp-controller="Student" asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
+                    <a  asp-controller="Student" asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+<h1>Trackers</h1>
+
+<p>
+    <a  asp-controller="Tracker" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Start")
+            </th>
+            <th>
+                @Html.DisplayName("End")
+            </th>
+            <th>
+                @Html.DisplayName("Submit")
+            </th>
+            <th>
+                @Html.DisplayName("Description")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Trackers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Start)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.End)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Submit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @(HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") != null&& item.TrackerId ==HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") ? "Yes":"--")
+                </td>
+                <td>
+                    <a asp-controller="Tracker" asp-action="Select" asp-route-id="@item.TrackerId">Select</a> |
+                    <a  asp-controller="Tracker" asp-action="Edit" asp-route-id="@item.TrackerId">Edit</a> |
+                    <a  asp-controller="Tracker" asp-action="Details" asp-route-id="@item.TrackerId">Details</a> |
+                    <a  asp-controller="Tracker" asp-action="Delete" asp-route-id="@item.TrackerId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
