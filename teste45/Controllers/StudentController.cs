@@ -5,27 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CoopTracker;
+using teste45.Data;
 
-namespace CoopTracker.Controllers
+namespace teste45.Controllers
 {
-    public class ProffApplyController : Controller
+    public class StudentController : Controller
     {
         private readonly CoopTrackerDbContext _context;
 
-        public ProffApplyController(CoopTrackerDbContext context)
+        public StudentController(CoopTrackerDbContext context)
         {
             _context = context;
-            
         }
 
-        // GET: ProffApply
+        // GET: Student
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProffApplys.ToListAsync());
+            return View(await _context.Students.ToListAsync());
         }
 
-        // GET: ProffApply/Details/5
+        // GET: Student/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +32,39 @@ namespace CoopTracker.Controllers
                 return NotFound();
             }
 
-            var proffApply = await _context.ProffApplys
-                .FirstOrDefaultAsync(m => m.ProffApplyId == id);
-            if (proffApply == null)
+            var student = await _context.Students
+                .FirstOrDefaultAsync(m => m.StudentId == id);
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(proffApply);
+            return View(student);
         }
 
-        // GET: ProffApply/Create
+        // GET: Student/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: ProffApply/Create
+        // POST: Student/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProffApplyId,TrackeeId,Image,Description,FileName,FileType")] ProffApply proffApply)
+        public async Task<IActionResult> Create([Bind("StudentId,StudentGeorgianCoolegeId,Email,FirstName,LastName,TenantId")] Student student)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(proffApply);
+                _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(proffApply);
+            return View(student);
         }
 
-        // GET: ProffApply/Edit/5
+        // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +72,22 @@ namespace CoopTracker.Controllers
                 return NotFound();
             }
 
-            var proffApply = await _context.ProffApplys.FindAsync(id);
-            if (proffApply == null)
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
-            return View(proffApply);
+            return View(student);
         }
 
-        // POST: ProffApply/Edit/5
+        // POST: Student/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProffApplyId,TenantId,Image,Description,FileName,FileType")] ProffApply proffApply)
+        public async Task<IActionResult> Edit(int id, [Bind("StudentId,StudentGeorgianCoolegeId,Email,FirstName,LastName,TenantId")] Student student)
         {
-            if (id != proffApply.ProffApplyId)
+            if (id != student.StudentId)
             {
                 return NotFound();
             }
@@ -97,12 +96,12 @@ namespace CoopTracker.Controllers
             {
                 try
                 {
-                    _context.Update(proffApply);
+                    _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProffApplyExists(proffApply.ProffApplyId))
+                    if (!StudentExists(student.StudentId))
                     {
                         return NotFound();
                     }
@@ -113,10 +112,10 @@ namespace CoopTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(proffApply);
+            return View(student);
         }
 
-        // GET: ProffApply/Delete/5
+        // GET: Student/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +123,34 @@ namespace CoopTracker.Controllers
                 return NotFound();
             }
 
-            var proffApply = await _context.ProffApplys
-                .FirstOrDefaultAsync(m => m.ProffApplyId == id);
-            if (proffApply == null)
+            var student = await _context.Students
+                .FirstOrDefaultAsync(m => m.StudentId == id);
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(proffApply);
+            return View(student);
         }
 
-        // POST: ProffApply/Delete/5
+        // POST: Student/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var proffApply = await _context.ProffApplys.FindAsync(id);
-            if (proffApply != null)
+            var student = await _context.Students.FindAsync(id);
+            if (student != null)
             {
-                _context.ProffApplys.Remove(proffApply);
+                _context.Students.Remove(student);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProffApplyExists(int id)
+        private bool StudentExists(int id)
         {
-            return _context.ProffApplys.Any(e => e.ProffApplyId == id);
+            return _context.Students.Any(e => e.StudentId == id);
         }
     }
 }

@@ -9,51 +9,18 @@
 
 <h1>GroupKeyMasters</h1>
 
-<p>
-    <a  asp-controller="GroupKeyMaster" asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayName("HashGroup")
-            </th>
-            <th>
-                Selected?
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.GroupKeyMasters)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HashGroup)
-                </td>
-                <td>
-                    @(HttpContextAccessor.HttpContext.Session.GetInt32("groupkey") != null&& item.GroupKeyMasterId ==HttpContextAccessor.HttpContext.Session.GetInt32("groupkey") ? "Yes":"--")
-                </td>
-                <td>
-                    <a asp-controller="GroupKeyMaster" asp-action="Select" asp-route-id="@item.GroupKeyMasterId">Select</a> |
-                    <a  asp-controller="GroupKeyMaster"  asp-action="Edit" asp-route-id="@item.GroupKeyMasterId">Edit</a> |
-                    <a asp-controller="GroupKeyMaster"  asp-action="Details" asp-route-id="@item.GroupKeyMasterId">Details</a> |
-                    <a asp-controller="GroupKeyMaster"  asp-action="Delete" asp-route-id="@item.GroupKeyMasterId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
 
 
 
 <h1>Student</h1>
 
-<p>
-    <a  asp-controller="Student" asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayName("GroupKeyMasterId")
+            </th>
             <th>
                 @Html.DisplayName("StudentGeorgianCoolegeId")
             </th>
@@ -75,6 +42,9 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.TenantId)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.StudentGeorgianCoolegeId)
                 </td>
                 <td>
@@ -90,10 +60,7 @@
                     @(HttpContextAccessor.HttpContext.Session.GetInt32("studentId") != null&& item.StudentId ==HttpContextAccessor.HttpContext.Session.GetInt32("studentId") ? "Yes":"--")
                 </td>
                 <td>
-                    <a asp-controller="Student" asp-action="Select" asp-route-id="@item.StudentId">Select</a> |
-                    <a  asp-controller="Student" asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
-                    <a  asp-controller="Student" asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
-                    <a  asp-controller="Student" asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
+                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> 
                 </td>
             </tr>
         }
@@ -102,15 +69,18 @@
 
 
 
+<p>
+    <a asp-controller="Tracker" asp-action="Create">Create New</a>
+</p>
 
 <h1>Trackers</h1>
 
-<p>
-    <a  asp-controller="Tracker" asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayName("GroupKeyMasterId")
+            </th>
             <th>
                 @Html.DisplayName("Start")
             </th>
@@ -131,6 +101,9 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.TenantId)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Start)
                 </td>
                 <td>
@@ -147,9 +120,9 @@
                 </td>
                 <td>
                     <a asp-controller="Tracker" asp-action="Select" asp-route-id="@item.TrackerId">Select</a> |
-                    <a  asp-controller="Tracker" asp-action="Edit" asp-route-id="@item.TrackerId">Edit</a> |
-                    <a  asp-controller="Tracker" asp-action="Details" asp-route-id="@item.TrackerId">Details</a> |
-                    <a  asp-controller="Tracker" asp-action="Delete" asp-route-id="@item.TrackerId">Delete</a>
+                    <a asp-controller="Tracker" asp-action="Edit" asp-route-id="@item.TrackerId">Edit</a> |
+                    <a asp-controller="Tracker" asp-action="Details" asp-route-id="@item.TrackerId">Details</a> |
+                    <a asp-controller="Tracker" asp-action="Delete" asp-route-id="@item.TrackerId">Delete</a>
                 </td>
             </tr>
         }

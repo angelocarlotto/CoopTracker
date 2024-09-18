@@ -3,9 +3,8 @@ namespace CoopTracker.Models
 {
 	public class IndexModel
 	{
-		public IEnumerable<GroupKeyMaster> GroupKeyMasters { get; set; }
-        public IEnumerable<Student> Students { get; set; }
-        public IEnumerable<Tracker> Trackers { get; set; }
-	}
+		public IEnumerable<Student> Students { get; set; } = new List<Student>();
+        public IEnumerable<Tracker> Trackers { get; set; } = new List<Tracker>();
+    }
 }
 

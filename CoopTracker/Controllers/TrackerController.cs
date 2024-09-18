@@ -56,7 +56,7 @@ namespace CoopTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrackerId,GroupKeyMasterId,Start,End,Submit,Description")] Tracker tracker)
+        public async Task<IActionResult> Create([Bind("TrackerId,TenantId,Start,End,Submit,Description")] Tracker tracker)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace CoopTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrackerId,Start,End,Submit,Description")] Tracker tracker)
+        public async Task<IActionResult> Edit(int id, [Bind("TrackerId,TenantId,Start,End,Submit,Description")] Tracker tracker)
         {
             if (id != tracker.TrackerId)
             {

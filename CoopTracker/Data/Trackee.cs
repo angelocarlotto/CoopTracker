@@ -1,9 +1,8 @@
 ﻿
 namespace CoopTracker;
 
-public class Trackee
+public class Trackee : TenantBaseEntity
 {
-    public  GroupKeyMaster? GroupKeyMaster { get; set; }
     public required int TrackeeId { get; set; }
     public required int TrackerId { get; set; }
     public  Tracker? Tracker { get; set; }
@@ -16,5 +15,4 @@ public class Trackee
     public required string LastUpdate { get; set; }
     public required ICollection<ProffApply> ProffApply { get; set; } = new List<ProffApply>();
     public required int StudentId { get;  set; }
-    public required int GroupKeyMasterId { get; set; }
 }

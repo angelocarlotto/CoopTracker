@@ -14,20 +14,20 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="GroupKeyMasterId" class="control-label"></label>
-                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("groupkey")" disabled />
-                <input asp-for="GroupKeyMasterId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("groupkey")" type="hidden"/>
-                <span asp-validation-for="GroupKeyMasterId" class="text-danger"></span>
+                <label asp-for="TenantId" class="control-label"></label>
+                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("TenantId")" disabled />
+                <input asp-for="TenantId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("TenantId")" type="hidden"/>
+                <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StudentId" class="control-label"></label>
-                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("studentId")" disabled />
+                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("studentName")" disabled />
                 <input asp-for="StudentId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("studentId")" type="hidden" />
                 <span asp-validation-for="StudentId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TrackerId" class="control-label"></label>
-                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")" disabled />
+                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")" disabled />
                 <input asp-for="TrackerId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")" type="hidden" />
                 <span asp-validation-for="TrackerId" class="text-danger"></span>
             </div>

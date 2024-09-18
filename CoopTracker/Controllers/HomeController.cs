@@ -17,10 +17,9 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var trakeers = await _context.Trackers.ToListAsync();
-        var groupKeyMasters = await _context.GroupKeyMasters.ToListAsync();
         var students = await _context.Students.ToListAsync();
 
-        return View(new IndexModel {GroupKeyMasters= groupKeyMasters,Students=students,Trackers=trakeers });
+        return View(new IndexModel {Students=students,Trackers=trakeers });
     }
 
 

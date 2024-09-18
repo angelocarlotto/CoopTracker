@@ -1,0 +1,25 @@
+﻿@model LoginModel;
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Login Page";
+}
+<h1>@ViewData["Title"] </h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form  asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TenantId" class="control-label"></label>
+                <input  asp-for="TenantId" class="form-control" />
+                <span asp-validation-for="TenantId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -14,9 +14,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="GroupKeyMasterId" class="control-label"></label>
-                <input asp-for="GroupKeyMasterId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("groupkey")"  contenteditable="false" />
-                <span asp-validation-for="GroupKeyMasterId" class="text-danger"></span>
+                <label asp-for="TenantId" class="control-label"></label>
+                <input asp-for="TenantId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("TenantId")"  contenteditable="false" />
+                <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Start" class="control-label"></label>

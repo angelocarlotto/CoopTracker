@@ -1,10 +1,11 @@
-﻿using CoopTracker;
+﻿using System.Configuration;
+using CoopTracker;
 using CoopTracker.Controllers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -25,6 +26,13 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new GroupHashFilter());
 });
 
+
+builder.Services.AddHttpContextAccessor();
+
+//builder.Services.AddScoped<TenantDbContextFactory>();
+//builder.Services.AddScoped(sp => sp.GetService<TenantDbContextFactory>().CreateDbContext());
+
+
 var app = builder.Build();
 
 
@@ -42,9 +50,10 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
+app.UseMiddleware<TenantMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();

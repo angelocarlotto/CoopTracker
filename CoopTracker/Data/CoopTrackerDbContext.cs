@@ -1,22 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using CoopTracker;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CoopTracker;
 
+public class TenantMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public TenantMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task Invoke(HttpContext context)
+    {
+        // Assuming TenantId is in session
+        if (context.Session.GetString("TenantId") == null)
+        {
+            // Set default TenantId if not set
+            context.Session.SetString("TenantId", "DefaultTenantId");
+        }
+
+        await _next(context);
+    }
+}
+
+public class TenantBaseEntity
+{
+    public required string TenantId { get; set; }
+}
+
+
 public partial class CoopTrackerDbContext : DbContext
 {
-    public CoopTrackerDbContext()
-    {
-    }
 
-    public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options)
-        : base(options)
-    {
-    }
+    private readonly string _tenantId;
 
-    public virtual DbSet<GroupKeyMaster> GroupKeyMasters { get; set; }
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options,  IHttpContextAccessor httpContextAccessor)
+       : base(options)
+    {
+        _httpContextAccessor = httpContextAccessor;
+         _tenantId = _httpContextAccessor.HttpContext?.Session.GetString("TenantId");
+    }
 
     public virtual DbSet<ProffApply> ProffApplys { get; set; }
 
@@ -29,70 +55,17 @@ public partial class CoopTrackerDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=DefaultConnection");
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<GroupKeyMaster>(entity =>
-        {
-            entity.ToTable("GroupKeyMaster");
-        });
-
-        modelBuilder.Entity<ProffApply>(entity =>
-        {
-            entity.HasIndex(e => e.GroupKeyMasterId, "IX_ProffApplys_GroupKeyMasterId");
-
-            entity.HasIndex(e => e.TrackeeId, "IX_ProffApplys_TrackeeId");
-
-            entity.HasOne(d => d.GroupKeyMaster).WithMany(p => p.ProffApply)
-                .HasForeignKey(d => d.GroupKeyMasterId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Trackee).WithMany(p => p.ProffApply).HasForeignKey(d => d.TrackeeId);
-        });
-
-        modelBuilder.Entity<Student>(entity =>
-        {
-            entity.HasIndex(e => e.GroupKeyMasterId, "IX_Students_GroupKeyMasterId");
-
-            entity.HasOne(d => d.GroupKeyMaster).WithMany(p => p.Student)
-                .HasForeignKey(d => d.GroupKeyMasterId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-        });
-
-        modelBuilder.Entity<Trackee>(entity =>
-        {
-            entity.HasIndex(e => e.GroupKeyMasterId, "IX_Trackees_GroupKeyMasterId");
-
-            entity.HasIndex(e => e.StudentId, "IX_Trackees_StudentId");
-
-            entity.HasIndex(e => e.TrackerId, "IX_Trackees_TrackerId");
-
-            entity.HasOne(d => d.GroupKeyMaster).WithMany(p => p.Trackee)
-                .HasForeignKey(d => d.GroupKeyMasterId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Student).WithMany(p => p.Trackee).HasForeignKey(d => d.StudentId);
-
-            entity.HasOne(d => d.Tracker).WithMany(p => p.Trackee).HasForeignKey(d => d.TrackerId);
-        });
-
-        modelBuilder.Entity<Tracker>(entity =>
-        {
-            entity.HasIndex(e => e.GroupKeyMasterId, "IX_Trackers_GroupKeyMasterId");
-
-            entity.Property(e => e.Description).HasDefaultValue("");
-
-            entity.HasOne(d => d.GroupKeyMaster).WithMany(p => p.Tracker)
-                .HasForeignKey(d => d.GroupKeyMasterId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-        });
-
-        modelBuilder.Entity<TrackerDetail>(entity =>
-        {
-            entity.Property(e => e.GroupKeyMaster).HasDefaultValue("");
-        });
-
+        modelBuilder.Entity<ProffApply>().HasQueryFilter(e => e.TenantId == _tenantId);
+        modelBuilder.Entity<Student>().HasQueryFilter(e => e.TenantId == _tenantId);
+        modelBuilder.Entity<Trackee>().HasQueryFilter(e => e.TenantId == _tenantId);
+        //modelBuilder.Entity<Tracker>().HasQueryFilter(e => e.TenantId == _tenantId);
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+
 }
