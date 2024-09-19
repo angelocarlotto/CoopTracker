@@ -15,13 +15,38 @@
             <input type="hidden" asp-for="StudentId" />
             <div class="form-group">
                 <label asp-for="TenantId" class="control-label"></label>
-                <input asp-for="TenantId" class="form-control" />
+                <input  class="form-control" value="@Model.TenantId" disabled />
+                
+                <input asp-for="TenantId" class="form-control" type="hidden"/>
                 <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StudentGeorgianCoolegeId" class="control-label"></label>
-                <input asp-for="StudentGeorgianCoolegeId" class="form-control" />
-                <span asp-validation-for="StudentGeorgianCoolegeId" class="text-danger"></span>
+                @Html.DisplayNameFor(model => model.StudentGeorgianCoolegeId)
+                @Html.EditorFor(model => model.StudentGeorgianCoolegeId)
+                
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Program" class="control-label"></label>
+                <select asp-for="Program"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<ProgramEnum>()">
+                    <option>Select type ...</option>
+                </select>
+                <span asp-validation-for="Program" class="text-danger"></span>
+                
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ActualSemester" class="control-label"></label>
+                <input asp-for="ActualSemester" class="form-control"  placeholder="3th semester(fall 2024)"/>
+                <span asp-validation-for="ActualSemester" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CoopSemester" class="control-label"></label>
+                <input asp-for="CoopSemester" class="form-control" placeholder="4th semester(winter 2025)"/>
+                <span asp-validation-for="CoopSemester" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -40,6 +65,9 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                @Html.ValidationSummary()
             </div>
         </form>
     </div>

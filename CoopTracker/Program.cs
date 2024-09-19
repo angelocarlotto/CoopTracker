@@ -29,13 +29,8 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-//builder.Services.AddScoped<TenantDbContextFactory>();
-//builder.Services.AddScoped(sp => sp.GetService<TenantDbContextFactory>().CreateDbContext());
-
 
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

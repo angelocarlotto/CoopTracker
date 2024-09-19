@@ -21,26 +21,10 @@ namespace CoopTracker.Controllers
         // GET: Trackee
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Trackees.ToListAsync());
+            return View(await _context.Trackees.Include(e=>e.Student).Include(e=>e.Tracker).ToListAsync());
         }
 
-        // GET: Trackee/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var trackee = await _context.Trackees
-                .FirstOrDefaultAsync(m => m.TrackeeId == id);
-            if (trackee == null)
-            {
-                return NotFound();
-            }
-
-            return View(trackee);
-        }
+       
 
         // GET: Trackee/Create
         public IActionResult Create()
@@ -72,7 +56,7 @@ namespace CoopTracker.Controllers
                 return NotFound();
             }
 
-            var trackee = await _context.Trackees.FindAsync(id);
+            var trackee =  _context.Trackees.Include(e=>e.Student).Include(e=>e.Tracker).FirstOrDefault(e=>e.TrackeeId==id) ;
             if (trackee == null)
             {
                 return NotFound();

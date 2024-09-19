@@ -27,24 +27,7 @@ namespace CoopTracker.Controllers
 
 
 
-        // GET: Tracker/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tracker = await _context.Trackers
-                .FirstOrDefaultAsync(m => m.TrackerId == id);
-            if (tracker == null)
-            {
-                return NotFound();
-            }
-
-            return View(tracker);
-        }
-
+       
         // GET: Tracker/Create
         public IActionResult Create()
         {
@@ -68,56 +51,6 @@ namespace CoopTracker.Controllers
             return View(tracker);
         }
 
-        // GET: Tracker/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tracker = await _context.Trackers.FindAsync(id);
-            if (tracker == null)
-            {
-                return NotFound();
-            }
-            return View(tracker);
-        }
-
-        // POST: Tracker/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrackerId,TenantId,Start,End,Submit,Description")] Tracker tracker)
-        {
-            if (id != tracker.TrackerId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(tracker);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TrackerExists(tracker.TrackerId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index", "Home");
-            }
-            return View(tracker);
-        }
 
         // GET: Tracker/Delete/5
         public async Task<IActionResult> Delete(int? id)

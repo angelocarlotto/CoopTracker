@@ -16,7 +16,7 @@ public class HomeController : Controller
     [TypeFilter(typeof(GroupHashFilter))]
     public async Task<IActionResult> Index()
     {
-        var trakeers = await _context.Trackers.ToListAsync();
+        var trakeers = await _context.Trackers.OrderBy(e=>e.Submit).ToListAsync();
         var students = await _context.Students.ToListAsync();
 
         return View(new IndexModel {Students=students,Trackers=trakeers });

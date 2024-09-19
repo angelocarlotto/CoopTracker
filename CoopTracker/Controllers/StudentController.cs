@@ -35,7 +35,7 @@ namespace CoopTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StudentId,TenantId,StudentGeorgianCoolegeId,Email,FirstName,LastName")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("StudentId,TenantId,StudentGeorgianCoolegeId,ActualSemester,CoopSemester,Program,Email,FirstName,LastName")] Student student)
         {
             if (id != student.StudentId)
             {

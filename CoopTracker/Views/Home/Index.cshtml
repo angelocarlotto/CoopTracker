@@ -25,6 +25,15 @@
                 @Html.DisplayName("StudentGeorgianCoolegeId")
             </th>
             <th>
+                @Html.DisplayName("Program")
+            </th>
+            <th>
+                @Html.DisplayName("ActualSemester")
+            </th>
+            <th>
+                @Html.DisplayName("CoopSemester")
+            </th>
+            <th>
                 @Html.DisplayName("Email")
             </th>
             <th>
@@ -48,6 +57,15 @@
                     @Html.DisplayFor(modelItem => item.StudentGeorgianCoolegeId)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Program)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActualSemester)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CoopSemester)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
@@ -60,7 +78,7 @@
                     @(HttpContextAccessor.HttpContext.Session.GetInt32("studentId") != null&& item.StudentId ==HttpContextAccessor.HttpContext.Session.GetInt32("studentId") ? "Yes":"--")
                 </td>
                 <td>
-                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> 
+                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.StudentId">Edit</a>
                 </td>
             </tr>
         }
@@ -120,8 +138,6 @@
                 </td>
                 <td>
                     <a asp-controller="Tracker" asp-action="Select" asp-route-id="@item.TrackerId">Select</a> |
-                    <a asp-controller="Tracker" asp-action="Edit" asp-route-id="@item.TrackerId">Edit</a> |
-                    <a asp-controller="Tracker" asp-action="Details" asp-route-id="@item.TrackerId">Details</a> |
                     <a asp-controller="Tracker" asp-action="Delete" asp-route-id="@item.TrackerId">Delete</a>
                 </td>
             </tr>

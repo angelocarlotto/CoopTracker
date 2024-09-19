@@ -13,6 +13,18 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.TenantId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrackerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CompanyName)
             </th>
             <th>
@@ -38,7 +50,16 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CompanyName)
+                    @Html.DisplayFor(modelItem => item.TenantId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tracker.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CompanyCity)
@@ -55,6 +76,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.LastUpdate)
                 </td>
+
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TrackeeId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.TrackeeId">Details</a> |

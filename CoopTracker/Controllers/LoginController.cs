@@ -15,20 +15,26 @@ public class LoginController : ControllerBase42
     {
         _context = context;
     }
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? TenantSecret)
     {
-        return View(new LoginModel { TenantId = GenerateRandomString(10) });
+        TenantId = "DOTZB0WFNK";
+        if (string.IsNullOrWhiteSpace(TenantId))
+            return View(new LoginModel { TenantSecret = string.IsNullOrWhiteSpace(TenantSecret) ? GenerateRandomString(10) : TenantSecret });
+        else
+            return RedirectToAction(actionName: "Login", routeValues: new { TenantSecret = TenantId});
     }
     public async Task<IActionResult> Logout()
     {
+
         CleanSession();
         return View("Index");
     }
-    [HttpPost]
-    public async Task<IActionResult> Login([Bind("TenantId")] string tenantId)
+    //[HttpPost]
+    public async Task<IActionResult> Login([Bind("TenantSecret")] string TenantSecret)
     {
-        TenantId = tenantId;
-        var studentAux = _context.Students.SingleOrDefault(e => e.TenantId == TenantId);
+        TenantId = TenantSecret;
+
+        var studentAux = _context.Students.IgnoreQueryFilters().FirstOrDefault(e => e.TenantId == TenantId);
         var student = studentAux == null ? new Student() { Email = "----", FirstName = "", LastName = "", StudentGeorgianCoolegeId = "", TenantId = TenantId } : studentAux;
         if (student.StudentId == 0)
         {

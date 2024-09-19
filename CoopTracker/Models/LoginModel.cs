@@ -3,7 +3,7 @@ namespace CoopTracker.Models
 {
 	public class LoginModel
 	{
-		public string TenantId { get; set; }
+		public string TenantSecret { get; set; }
 	}
 }
 

@@ -11,6 +11,7 @@ public class Trackee : TenantBaseEntity
     public required string CompanyCity { get; set; }
     public required string JobTitle { get; set; }
     public required DateTime DateAppliation { get; set; }
+    public  DateTime? DateCreated { get; set; } = DateTime.Now;
     public required string DocumentProvided { get; set; }
     public required string LastUpdate { get; set; }
     public required ICollection<ProffApply> ProffApply { get; set; } = new List<ProffApply>();

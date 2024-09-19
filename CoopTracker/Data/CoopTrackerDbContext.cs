@@ -17,7 +17,7 @@ public class TenantMiddleware
         if (context.Session.GetString("TenantId") == null)
         {
             // Set default TenantId if not set
-            context.Session.SetString("TenantId", "DefaultTenantId");
+            context.Session.SetString("TenantId", string.Empty);
         }
 
         await _next(context);
@@ -36,12 +36,13 @@ public partial class CoopTrackerDbContext : DbContext
     private readonly string _tenantId;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options,  IHttpContextAccessor httpContextAccessor)
+   // public CoopTrackerDbContext() { }
+   // public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options) : base(options) { }
+    public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options, IHttpContextAccessor httpContextAccessor)
        : base(options)
     {
         _httpContextAccessor = httpContextAccessor;
-         _tenantId = _httpContextAccessor.HttpContext?.Session.GetString("TenantId");
+        _tenantId = _httpContextAccessor.HttpContext?.Session.GetString("TenantId");
     }
 
     public virtual DbSet<ProffApply> ProffApplys { get; set; }

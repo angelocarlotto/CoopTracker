@@ -37,7 +37,7 @@ public partial class CoopTrackerDbContext : DbContext
 
             entity.HasOne(d => d.Trackee).WithMany(p => p.ProffApplies).HasForeignKey(d => d.TrackeeId);
 
-            entity.HasQueryFilter(e=>e.TenantId==_tenant_id)
+            entity.HasQueryFilter(e => e.TenantId == _tenant_id);
         });
 
         modelBuilder.Entity<Trackee>(entity =>

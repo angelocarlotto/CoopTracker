@@ -4,6 +4,7 @@ using CoopTracker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoopTracker.Migrations
 {
     [DbContext(typeof(CoopTrackerDbContext))]
-    partial class CoopTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240919014423_added_semester_on_student")]
+    partial class added_semester_on_student
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,9 +124,6 @@ namespace CoopTracker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateAppliation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentProvided")
