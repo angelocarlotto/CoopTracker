@@ -17,7 +17,7 @@ public class LoginController : ControllerBase42
     }
     public async Task<IActionResult> Index(string? TenantSecret)
     {
-       // TenantId = "DOTZB0WFNK";
+      // TenantId = "DOTZB0WFNK";
 
         if (string.IsNullOrWhiteSpace(TenantId))
             return View(new LoginModel { TenantSecret = string.IsNullOrWhiteSpace(TenantSecret) ? GenerateRandomString(10) : TenantSecret });
@@ -28,7 +28,7 @@ public class LoginController : ControllerBase42
     {
 
         CleanSession();
-        return View("Index");
+         return RedirectToAction("Index", "Home");
     }
     //[HttpPost]
     public async Task<IActionResult> Login([Bind("TenantSecret")] string TenantSecret)
