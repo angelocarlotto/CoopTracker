@@ -10,11 +10,14 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form  asp-action="Login">
+        <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="TenantSecret" class="control-label"></label>
-                <input  asp-for="TenantSecret" class="form-control" />
+                <input asp-for="TenantSecret" class="form-control" /> <p class="text-danger"> << -- Please Save this Key future, this is your individual identification on the system!!! </p>
+                <p class="text-danger">
+                    Next time you can access your informations by accessing:<a href="http://localhost:5054?TenantSecret=@Model.TenantSecret"> http://localhost:5054?TenantSecret=@Model.TenantSecret</a>
+                </p>
                 <span asp-validation-for="TenantSecret" class="text-danger"></span>
             </div>
             <div class="form-group">

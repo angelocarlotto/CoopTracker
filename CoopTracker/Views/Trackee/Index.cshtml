@@ -76,13 +76,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.LastUpdate)
                 </td>
-
+                <td>
+                    <a asp-controller="ProffApply"  asp-action="Index"  asp-route-trackerId="@item.TrackeeId">Attachee</a>
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TrackeeId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.TrackeeId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.TrackeeId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <th>Total</th>
+            <th colspan="8"></th>
+            <th> @Model.Count()</th>
+            <th></th>
+        </tr>
+    </tfoot>
 </table>

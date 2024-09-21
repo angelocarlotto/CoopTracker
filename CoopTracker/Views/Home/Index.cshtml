@@ -1,17 +1,11 @@
 ﻿@model IndexModel;
 @using Microsoft.AspNetCore.Http;
+@using Humanizer;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Home Page";
 }
-
-
-<h1>GroupKeyMasters</h1>
-
-
-
-
 
 <h1>Student</h1>
 
@@ -19,28 +13,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("GroupKeyMasterId")
+                @Html.DisplayName("Tenant Secret")
             </th>
             <th>
-                @Html.DisplayName("StudentGeorgianCoolegeId")
+                @Html.DisplayName("Student Georgian College Number")
             </th>
             <th>
                 @Html.DisplayName("Program")
             </th>
             <th>
-                @Html.DisplayName("ActualSemester")
+                @Html.DisplayName("Current Semester")
             </th>
             <th>
-                @Html.DisplayName("CoopSemester")
+                @Html.DisplayName("Coop Semester")
             </th>
             <th>
                 @Html.DisplayName("Email")
             </th>
             <th>
-                @Html.DisplayName("FirstName")
+                @Html.DisplayName("First Name")
             </th>
             <th>
-                @Html.DisplayName("LastName")
+                @Html.DisplayName("Last Name")
             </th>
             <th>Selected?</th>
             <th></th>
@@ -86,31 +80,30 @@
 </table>
 
 
-
-<p>
-    <a asp-controller="Tracker" asp-action="Create">Create New</a>
-</p>
-
+@if (Model.TenantId == Model.TenantIdAdmin)
+{
+    <p>
+        <a asp-controller="Tracker" asp-action="Create">Create New</a>
+    </p>
+}
 <h1>Trackers</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("GroupKeyMasterId")
+                @Html.DisplayName("Start in")
             </th>
             <th>
-                @Html.DisplayName("Start")
+                @Html.DisplayName("End in")
             </th>
             <th>
-                @Html.DisplayName("End")
-            </th>
-            <th>
-                @Html.DisplayName("Submit")
+                @Html.DisplayName("Submit in")
             </th>
             <th>
                 @Html.DisplayName("Description")
             </th>
+            <th>@Html.DisplayName("Total Applications")</th>
             <th></th>
         </tr>
     </thead>
@@ -119,28 +112,49 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TenantId)
+                    <abbr title="@item.Start.Date">
+                        @item.Start.Date
+                    </abbr>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Start)
+                    <abbr title="@item.End.Date">
+                        @item.End.Date
+                    </abbr>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.End)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Submit)
+                    <abbr title="@item.Submit.Date">
+                        @item.Submit.Date
+                    </abbr>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @(HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") != null&& item.TrackerId ==HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") ? "Yes":"--")
+                    @item.Trackee.Count()
                 </td>
                 <td>
-                    <a asp-controller="Tracker" asp-action="Select" asp-route-id="@item.TrackerId">Select</a> |
-                    <a asp-controller="Tracker" asp-action="Delete" asp-route-id="@item.TrackerId">Delete</a>
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") != null && item.TrackerId == HttpContextAccessor.HttpContext.Session.GetInt32("trackerId"))
+                    {
+                        <label>Yes</label>
+                    }
+                    else
+                    {
+                        <a asp-controller="Tracker" asp-action="Select" asp-route-id="@item.TrackerId">@(item.TrackerId== Model.TrackerIdCalculatedBySystem?"Select Current**": "Select")</a>
+                    }
+                    @if (Model.TenantId == item.TenantId)
+                    {
+                        <a asp-controller="Tracker" asp-action="Delete" asp-route-id="@item.TrackerId">| Delete</a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <th><em>Total</em> </th>
+            <th colspan="3"></th>
+            <th>@Model.Trackers.Sum(e => e.Trackee.Count()) </th>
+            <th></th>
+        </tr>
+    </tfoot>
 </table>

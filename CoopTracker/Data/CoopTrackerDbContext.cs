@@ -24,9 +24,9 @@ public class TenantMiddleware
     }
 }
 
-public class TenantBaseEntity
+public interface ITenantBaseEntity
 {
-    public required string TenantId { get; set; }
+    public  string TenantId { get; set; }
 }
 
 

@@ -12,16 +12,19 @@ namespace CoopTracker.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> Select(int id)
         {
-            var student = await _context.Trackers
+            var tracker = await _context.Trackers.Include(e=>e.Trackee)
                 .FirstOrDefaultAsync(m => m.TrackerId == id);
-            if (student == null)
+            if (tracker == null)
             {
                 return NotFound();
             }
-            trackerDescription= student.Description;
+            trackerDescription= tracker.Description;
             trackerId= id;
+            IsUserSelectedTracker = true;
+            UserSelectedTrackerTrakeeCount = tracker.Trackee.Count();
             return RedirectToAction("Index", "Home");
         }
 

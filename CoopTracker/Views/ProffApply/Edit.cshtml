@@ -1,5 +1,6 @@
-@model CoopTracker.ProffApply
-
+@model CoopTracker.Models.ProffApplyModelUpdate
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Edit";
 }
@@ -14,25 +15,32 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProffApplyId" />
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <label asp-for="TenantId" class="control-label"></label>
+                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("TenantId")" disabled />
+                <input asp-for="TenantId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("TenantId")" type="hidden" />
+                <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="TrackeeId" class="control-label"></label>
+                <input class="form-control" value="@Model.TrackeeId" disabled />
+                <input asp-for="TrackeeId" class="form-control" value="@Model.TrackeeId" type="hidden" />
+                <span asp-validation-for="TrackeeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" asp-for="Image" class="form-control" type="file" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+
+                <img src=@(Model.UserPicture==null?null:Model.UserPicture) width="400"/>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="FileName" class="control-label"></label>
-                <input asp-for="FileName" class="form-control" />
-                <span asp-validation-for="FileName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FileType" class="control-label"></label>
-                <input asp-for="FileType" class="form-control" />
-                <span asp-validation-for="FileType" class="text-danger"></span>
-            </div>
+           
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

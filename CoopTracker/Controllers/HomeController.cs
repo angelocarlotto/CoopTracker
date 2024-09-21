@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoopTracker.Controllers;
 
-public class HomeController : Controller
+public class HomeController : ControllerBase42
 {
 
     private readonly CoopTrackerDbContext _context;
@@ -14,12 +14,23 @@ public class HomeController : Controller
         _context = context;
     }
     [TypeFilter(typeof(GroupHashFilter))]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(bool? customSelectTracker)
     {
-        var trakeers = await _context.Trackers.OrderBy(e=>e.Submit).ToListAsync();
+        var tracker = await _context.Trackers.Include(e => e.Trackee).OrderBy(e => e.Submit).ToListAsync();
         var students = await _context.Students.ToListAsync();
+        var today =  new DateTime(2024, 10, 5);
 
-        return View(new IndexModel {Students=students,Trackers=trakeers });
+        var currentTracker = tracker.Where(e => (today >= e.Start.Date.Date && today <= e.End.Date.Date)).FirstOrDefault();
+        if (!IsUserSelectedTracker)
+        {
+            if (currentTracker != null)
+            {
+                trackerId = currentTracker.TrackerId;
+                trackerDescription = currentTracker.Description;
+                UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
+            }
+        }
+        return View(new IndexModel { Students = students, Trackers = tracker, TenantId = this.TenantId, TrackerIdCalculatedBySystem = currentTracker.TrackerId });
     }
 
 

@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
 using CoopTracker.Models;
 using System.Text;
+using System.Linq;
 
 namespace CoopTracker.Controllers;
 
@@ -14,6 +15,7 @@ public class ReportController : ControllerBase42
     {
         _context = context;
     }
+
     // Method to replace placeholders and fit the text as needed
     private void ReplacePlaceholderInParagraph(Paragraph paragraph, string placeholder, string replacement)
     {
@@ -50,14 +52,13 @@ public class ReportController : ControllerBase42
             // The remaining Runs (if any) will be empty and can be kept or removed based on your needs.
         }
     }
-    
     public IActionResult GenerateDocx(int? Trackers)
     {
         string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
         string outputFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", "GeneratedDoc.docx");
         var track = _context.Trackers.FirstOrDefault(e => e.TrackerId == Trackers);
         var student = _context.Students.FirstOrDefault(e => e.StudentId == StudentId);
-        var trakees = _context.Trackees.Where(e => e.StudentId == StudentId && e.TrackerId==Trackers).ToList();
+        var trakees = _context.Trackees.Where(e => e.StudentId == StudentId && e.TrackerId == Trackers).ToList();
         // Copy the template to the output path
         System.IO.File.Copy(templatePath, outputFile, true);
 
@@ -95,10 +96,10 @@ public class ReportController : ControllerBase42
                     }
                 }
             }
-            
-            foreach (var table in body.Elements<Table>())
+
+            foreach (var table in body.Elements<Table>().Skip(1))
             {
-                var tt = table.Elements<TableRow>().Skip(1).Zip(trakees, (r, t) => new { row = r,trakee=t });
+                var tt = table.Elements<TableRow>().Skip(1).Zip(trakees, (r, t) => new { row = r, trakee = t });
                 foreach (var obj in tt)
                 {
                     foreach (var cell in obj.row.Elements<TableCell>())
@@ -112,6 +113,18 @@ public class ReportController : ControllerBase42
                             ReplacePlaceholderInParagraph(paragraph, "{DateApplication}", obj.trakee.DateAppliation.ToShortDateString());
                             ReplacePlaceholderInParagraph(paragraph, "{ProvidedDocuments}", obj.trakee.DocumentProvided);
                         }
+                    }
+                }
+            }
+
+            foreach (var r in body.Elements<Table>().Skip(1).FirstOrDefault().Elements<TableRow>().Skip(trakees.Count + 1))
+            {
+                foreach (var cell in r.Elements<TableCell>())
+                {
+                    foreach (var run in cell.Elements<Run>())
+                    {
+
+                        run.RemoveAllChildren<Text>();
                     }
                 }
             }

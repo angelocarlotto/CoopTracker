@@ -35,7 +35,7 @@ public class LoginController : ControllerBase42
         TenantId = TenantSecret;
 
         var studentAux = _context.Students.IgnoreQueryFilters().FirstOrDefault(e => e.TenantId == TenantId);
-        var student = studentAux == null ? new Student() { Email = "----", FirstName = "", LastName = "", StudentGeorgianCoolegeId = "", TenantId = TenantId } : studentAux;
+        var student = studentAux == null ? new Student() { ActualSemester="--" ,CoopSemester= "",Email = "----", FirstName = "", LastName = "", StudentGeorgianCoolegeId = "", TenantId = TenantId } : studentAux;
         if (student.StudentId == 0)
         {
             _context.Add(student);

@@ -6,6 +6,9 @@ namespace CoopTracker.Controllers;
 
 public class ControllerBase42 : Controller
 {
+    public int UserSelectedTrackerTrakeeCount { get { return HttpContext.Session.GetInt32("UserSelectedTrackerTrakeeCount").Value; } set { HttpContext.Session.SetInt32("UserSelectedTrackerTrakeeCount", value); } }
+    public bool IsUserSelectedTracker { get { return HttpContext.Session.GetInt32("UserSelectedTracker")==1; } set { HttpContext.Session.SetInt32("UserSelectedTracker", value == true ? 1 : 0);  } }
+
     public int StudentId { get { return HttpContext.Session.GetInt32("studentId").Value; } set { HttpContext.Session.SetInt32("studentId", value); } }
     public string StudentName { get { return HttpContext.Session.GetString("studentName"); } set { HttpContext.Session.SetString("studentName", value); } }
 

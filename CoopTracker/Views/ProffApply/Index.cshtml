@@ -1,53 +1,62 @@
-@model IEnumerable<CoopTracker.ProffApply>
+@model CoopTracker.Models.ProffApplyModelIndex
 
 @{
     ViewData["Title"] = "Index";
+
 }
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileType)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProffApplyId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProffApplyId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProffApplyId">Delete</a>
-            </td>
-        </tr>
+@if (Model.TrackeeId != null)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileType)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ProffApplyModelUpdateList)
+            {
+                <tr>
+                    <td>
+                        <img src=@(item.UserPicture == null ? null : item.UserPicture) width="200" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileType)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProffApplyId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProffApplyId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProffApplyId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
+else
+{
+    <div class="text-danger"> No trakee select</div>
+}

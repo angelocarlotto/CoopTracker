@@ -9,7 +9,7 @@ using CoopTracker;
 
 namespace CoopTracker.Controllers
 {
-    public class TrackeeController : Controller
+    public class TrackeeController : ControllerBase42
     {
         private readonly CoopTrackerDbContext _context;
 
@@ -19,9 +19,9 @@ namespace CoopTracker.Controllers
         }
 
         // GET: Trackee
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? trakerId)
         {
-            return View(await _context.Trackees.Include(e=>e.Student).Include(e=>e.Tracker).ToListAsync());
+            return View(await _context.Trackees.Where(e=>e.TrackerId== this.trackerId).Include(e=>e.Student).Include(e=>e.Tracker).ToListAsync());
         }
 
        
