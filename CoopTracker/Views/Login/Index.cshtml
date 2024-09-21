@@ -16,7 +16,7 @@
                 <label asp-for="TenantSecret" class="control-label"></label>
                 <input asp-for="TenantSecret" class="form-control" /> <p class="text-danger"> << -- Please Save this Key future, this is your individual identification on the system!!! </p>
                 <p class="text-danger">
-                    Next time you can access your informations by accessing:<a href="http://localhost:5054?TenantSecret=@Model.TenantSecret"> http://localhost:5054?TenantSecret=@Model.TenantSecret</a>
+                    Next time you can access your informations by accessing:<a href="@(HttpContextAccessor.HttpContext.Request.Scheme+"://"+HttpContextAccessor.HttpContext.Request.Host)?TenantSecret=@Model.TenantSecret"> @(HttpContextAccessor.HttpContext.Request.Host)?TenantSecret=@Model.TenantSecret</a>
                 </p>
                 <span asp-validation-for="TenantSecret" class="text-danger"></span>
             </div>

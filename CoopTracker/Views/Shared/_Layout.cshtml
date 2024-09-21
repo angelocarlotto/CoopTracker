@@ -29,7 +29,7 @@
 
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                                    @HttpContextAccessor.HttpContext.Session.GetString("TenantId"),@HttpContextAccessor.HttpContext.Session.GetString("studentName"),@HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")
+                                    @HttpContextAccessor.HttpContext.Session.GetString("TenantId") | @HttpContextAccessor.HttpContext.Session.GetString("studentName") | @HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")
                                 </a>
                             </li>
 

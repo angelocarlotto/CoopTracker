@@ -187,8 +187,9 @@ public class ProffApplyController : Controller
 
     public FileResult FileEndpoint(int Id)
     {
-        var content = _context.ProffApplys.FirstOrDefault(x => x.ProffApplyId == Id).Image;
-        return File(content, "image/png");
+        var obj = _context.ProffApplys.FirstOrDefault(x => x.ProffApplyId == Id);
+        var content = obj.Image;
+        return File(content, obj.FileType);
     }
 }
 
