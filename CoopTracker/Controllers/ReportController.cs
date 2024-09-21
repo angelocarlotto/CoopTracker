@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using CoopTracker.Models;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoopTracker.Controllers;
 
@@ -185,7 +186,7 @@ public class ReportController : ControllerBase42
     public async Task<IActionResult> Index(string? TenantSecret)
     {
 
-        return View(new ReportModel { Trackers = _context.Trackers.ToList() });
+        return View(new ReportModel { Trackers = _context.Trackers.Include(e=>e.Trackee).ToList() });
     }
 
     public async Task<IActionResult> GenerateReport(int? Trackers)
