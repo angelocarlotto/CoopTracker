@@ -22,10 +22,11 @@ public class ProffApplyController : Controller
     }
 
     // GET: ProffApply
-    public async Task<IActionResult> Index(int? trackerId)
+    public async Task<IActionResult> Index(int? trackeeId)
     {
-        var modelView = new ProffApplyModelIndex() { TrackeeId=trackerId};
-        modelView.ProffApplyModelUpdateList = await _context.ProffApplys.Where(e => e.TrackeeId == trackerId).Select(e => e.ToUpdateViewModel()).ToListAsync();
+        var modelView = new ProffApplyModelIndex() { TrackeeId= trackeeId };
+        modelView.ProffApplyModelUpdateList = await _context.ProffApplys.Where(e => e.TrackeeId == trackeeId).Select(e => e.ToUpdateViewModel()).ToListAsync();
+        modelView.TrackerId = trackeeId;
         return View(modelView);
     }
 
@@ -48,9 +49,9 @@ public class ProffApplyController : Controller
     }
 
     // GET: ProffApply/Create
-    public IActionResult Create(int trackerId)
+    public IActionResult Create(int trakeeId)
     {
-        return View(new ProffApplyModelCreate() { TrackeeId = trackerId });
+        return View(new ProffApplyModelCreate() { TrackeeId = trakeeId });
     }
 
     // POST: ProffApply/Create
@@ -66,7 +67,7 @@ public class ProffApplyController : Controller
             _context.ProffApplys.Add(file);
             await _context.SaveChangesAsync();
             var viewmodel = file.ToCreateViewModel();
-            return RedirectToAction("Index", "ProffApply");
+            return RedirectToAction("Index", "ProffApply", new { trackeeId = proffApply.TrackeeId});
         }
         return View(proffApply);
     }
@@ -93,7 +94,7 @@ public class ProffApplyController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("ProffApplyId,TenantId,Image,Description")] ProffApplyModelUpdate proffApply)
+    public async Task<IActionResult> Edit(int id, [Bind("ProffApplyId,TenantId,Image,Description,TrackeeId")] ProffApplyModelUpdate proffApply)
     {
         if (id != proffApply.ProffApplyId)
         {
@@ -104,7 +105,18 @@ public class ProffApplyController : Controller
         {
             try
             {
-                _context.Update(proffApply);
+                var toBeUpdatedProffApply = _context.ProffApplys.Find(proffApply.ProffApplyId);
+
+                var entry = proffApply.ToUpdateEntity();
+
+                
+                _context.Entry(toBeUpdatedProffApply).CurrentValues.SetValues(entry);
+
+                _context.Entry(toBeUpdatedProffApply).Property(nameof(toBeUpdatedProffApply.Image)).IsModified = proffApply.Image != null;
+                _context.Entry(toBeUpdatedProffApply).Property(nameof(toBeUpdatedProffApply.FileName)).IsModified = proffApply.Image != null;
+                _context.Entry(toBeUpdatedProffApply).Property(nameof(toBeUpdatedProffApply.FileType)).IsModified = proffApply.Image != null;
+
+                _context.Update(toBeUpdatedProffApply);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -118,7 +130,8 @@ public class ProffApplyController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            
+            return RedirectToAction("Index", "ProffApply", new { trackeeId = proffApply.TrackeeId });
         }
         return View(proffApply);
     }
@@ -153,6 +166,7 @@ public class ProffApplyController : Controller
         }
 
         await _context.SaveChangesAsync();
+        return RedirectToAction("Index", "ProffApply", new { trackeeId = proffApply.TrackeeId });
         return RedirectToAction(nameof(Index));
     }
 

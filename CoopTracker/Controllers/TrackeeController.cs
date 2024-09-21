@@ -21,7 +21,7 @@ namespace CoopTracker.Controllers
         // GET: Trackee
         public async Task<IActionResult> Index(int? trakerId)
         {
-            return View(await _context.Trackees.Where(e=>e.TrackerId== this.trackerId).Include(e=>e.Student).Include(e=>e.Tracker).ToListAsync());
+            return View(await _context.Trackees.Include(e=>e.ProffApply).Where(e=>e.TrackerId== this.trackerId).Include(e=>e.Student).Include(e=>e.Tracker).ToListAsync());
         }
 
        

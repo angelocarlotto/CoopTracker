@@ -34,8 +34,7 @@ public static class ProffApplyExtension
         obj.Image = formFile;
         return obj;
     }
-
-    public static ProffApply ToUpdateEntity(this ProffApplyModelUpdate proff)
+    public static ProffApply ToUpdateEntity(this ProffApplyModelUpdate proff, ProffApply? entity)
     {
         var obj = new ProffApply
         {
@@ -48,6 +47,8 @@ public static class ProffApplyExtension
             TenantId = proff.TenantId
         };
 
+
+
         if (proff.Image != null)
         {
             using (var memoryStream = new MemoryStream())
@@ -58,6 +59,37 @@ public static class ProffApplyExtension
                 {
                     //ProffApplyId = someid,
                     obj.Image = memoryStream.ToArray();
+                }
+            }
+        }
+        return obj;
+    }
+
+    public static ProffApply ToUpdateEntity(this ProffApplyModelUpdate proff)
+    {
+        ProffApply obj = new ProffApply
+        {
+            Description = proff.Description,
+            ProffApplyId = proff.ProffApplyId,
+            TrackeeId = proff.TrackeeId,
+            Image = new byte[0],
+            TenantId = proff.TenantId
+        };
+
+
+
+        if (proff.Image != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                proff.Image.CopyTo(memoryStream);
+                // check the size of the file
+                if (memoryStream.Length < 2097152)
+                {
+                    //ProffApplyId = someid,
+                    obj.Image = memoryStream.ToArray();
+                    obj.FileName = proff.Image?.FileName;
+                    obj.FileType = proff.Image?.ContentType;
                 }
             }
         }
@@ -125,8 +157,8 @@ public class ProffApply : ITenantBaseEntity
     public Trackee? Trackee { get; set; }
     public required byte[] Image { get; set; }
     public required string Description { get; set; }
-    public required string FileName { get; set; }
-    public required string FileType { get; set; }
+    public  string FileName { get; set; }
+    public  string FileType { get; set; }
     public required int TrackeeId { get; set; }
     public required string TenantId { get; set; }
 

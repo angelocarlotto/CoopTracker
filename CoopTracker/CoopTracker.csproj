@@ -41,4 +41,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\GeneratedDocuments\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" />
+  </ItemGroup>
 </Project>

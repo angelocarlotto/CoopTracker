@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>List of Trakees</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -77,7 +77,7 @@
                     @Html.DisplayFor(modelItem => item.LastUpdate)
                 </td>
                 <td>
-                    <a asp-controller="ProffApply"  asp-action="Index"  asp-route-trackerId="@item.TrackeeId">Attachee</a>
+                    <a asp-controller="ProffApply"  asp-action="Index"  asp-route-trackeeId="@item.TrackeeId">Attachee(@(item.ProffApply.Count()))</a>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TrackeeId">Edit</a> |

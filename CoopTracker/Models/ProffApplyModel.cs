@@ -3,6 +3,7 @@ namespace CoopTracker.Models;
 
 public class ProffApplyModelIndex
 {
+    public int? TrackerId { get; set; }
     public int? TrackeeId { get; set; }
     public IFormFile? Image { get; set; }
     public string Description { get; set; }
@@ -21,7 +22,7 @@ public class ProffApplyModelCreate
     public string? FileType { get; set; }
     public int TrackeeId { get; set; }
     public string TenantId { get; set; }
-    public string? UserPicture { get; internal set; }
+    public string? UserPicture { get;  set; }
 }
 
 
@@ -34,6 +35,6 @@ public class ProffApplyModelUpdate
     public string? FileType { get; set; }
     public int TrackeeId { get; set; }
     public string TenantId { get; set; }
-    public string? UserPicture { get; internal set; }
+    public string? UserPicture { get; set; }
 }
 

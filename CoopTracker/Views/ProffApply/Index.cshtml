@@ -5,12 +5,12 @@
 
 }
 
-<h1>Index</h1>
+<h1>List of Attachements</h1>
 
 @if (Model.TrackeeId != null)
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create" asp-route-trakeeId="@Model.TrackeeId">Create New</a>
     </p>
     <table class="table">
         <thead>
@@ -35,7 +35,7 @@
             {
                 <tr>
                     <td>
-                        <img src=@(item.UserPicture == null ? null : item.UserPicture) width="200" />
+                      <a href="@item.UserPicture" target="_blank">  <img src=@(item.UserPicture == null ? null : item.UserPicture) width="200" /></a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Description)
