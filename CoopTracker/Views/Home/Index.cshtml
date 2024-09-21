@@ -112,6 +112,7 @@
         {
             <tr>
                 <td>
+                    @(item.TrackerId== Model.TrackerIdCalculatedBySystem?">": "")
                     <abbr title="@item.Start.Date">
                         @item.Start.Date
                     </abbr>
