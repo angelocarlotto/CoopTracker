@@ -12,12 +12,12 @@
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
-      "hotReloadEnabled": true,
       "applicationUrl": "http://localhost:5053",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": true
+      "dotnetRunMessages": true,
+      "hotReloadEnabled": true
     },
     "IIS Express": {
       "commandName": "IISExpress",
