@@ -5,11 +5,11 @@ ARG TARGETARCH
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
-COPY *.csproj .
+COPY CoopTracker/*.csproj .
 RUN dotnet restore -a $TARGETARCH
 
 # copy and publish app and libraries
-COPY . .
+COPY CoopTracker/. .
 RUN dotnet publish -a $TARGETARCH --no-restore -o /app
 
 
@@ -19,4 +19,4 @@ EXPOSE 8080
 WORKDIR /app
 COPY --from=build /app .
 USER $APP_UID
-ENTRYPOINT ["./"]
+ENTRYPOINT ["./CoopTracker"]
