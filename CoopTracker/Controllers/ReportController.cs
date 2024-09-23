@@ -21,7 +21,7 @@ public class ReportController : ControllerBase42
     // Method to replace placeholders and fit the text as needed
     public IActionResult GenerateDocx(int? Trackers)
     {
-        string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
+        string templatePath = Path.Combine("app",Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
 
        // var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "GeneratedDocuments", file.FileName);
 
@@ -31,7 +31,7 @@ public class ReportController : ControllerBase42
         //}
 
 
-        string outputFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", "GeneratedDoc.docx");
+        string outputFile = Path.Combine("app",Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", "GeneratedDoc.docx");
         var track = _context.Trackers.FirstOrDefault(e => e.TrackerId == Trackers);
         var student = _context.Students.FirstOrDefault(e => e.StudentId == StudentId);
         var trackees = _context.Trackees.Include(e => e.ProffApply)
