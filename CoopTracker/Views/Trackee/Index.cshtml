@@ -65,7 +65,7 @@
                     @Html.DisplayFor(modelItem => item.CompanyCity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.JobTitle)
+                    <a href="@(string.IsNullOrEmpty( item.UrlLink)?"#":item.UrlLink)" target="_blank"> @item.JobTitle</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateAppliation)
@@ -77,7 +77,8 @@
                     @Html.DisplayFor(modelItem => item.LastUpdate)
                 </td>
                 <td>
-                    <a asp-controller="ProffApply"  asp-action="Index"  asp-route-trackeeId="@item.TrackeeId">Attachee(@(item.ProffApply.Count()))</a>
+                    <a asp-controller="ProffApply" asp-action="Index"
+                        asp-route-trackeeId="@item.TrackeeId">Attachee(@(item.ProffApply.Count()))</a>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TrackeeId">Edit</a> |

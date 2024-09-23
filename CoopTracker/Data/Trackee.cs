@@ -23,6 +23,7 @@ public class Trackee : ITenantBaseEntity
     public required string DocumentProvided { get; set; }
     [Display(Name = "Last Update")]
     public required string LastUpdate { get; set; }
+    public  string? UrlLink { get; set; }
     public required ICollection<ProffApply> ProffApply { get; set; } = new List<ProffApply>();
     public required int StudentId { get;  set; }
     public required string TenantId { get; set; }

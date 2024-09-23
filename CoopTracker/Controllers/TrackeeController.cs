@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CoopTracker;
 
 namespace CoopTracker.Controllers
 {
@@ -37,7 +31,7 @@ namespace CoopTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrackeeId,TenantId,StudentId,TrackerId,CompanyName,CompanyCity,JobTitle,DateAppliation,DocumentProvided,LastUpdate")] Trackee trackee)
+        public async Task<IActionResult> Create([Bind("TrackeeId,TenantId,StudentId,TrackerId,CompanyName,CompanyCity,JobTitle,DateAppliation,DocumentProvided,LastUpdate,UrlLink")] Trackee trackee)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +63,7 @@ namespace CoopTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrackeeId,TenantId,StudentId,TrackerId,CompanyName,CompanyCity,JobTitle,DateAppliation,DocumentProvided,LastUpdate")] Trackee trackee)
+        public async Task<IActionResult> Edit(int id, [Bind("TrackeeId,TenantId,StudentId,TrackerId,CompanyName,CompanyCity,JobTitle,DateAppliation,DocumentProvided,LastUpdate,UrlLink")] Trackee trackee)
         {
             if (id != trackee.TrackeeId)
             {
