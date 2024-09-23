@@ -44,5 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />
+
+     <None Include="Templates\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Templates\template2.docx" CopyToOutputDirectory="PreserveNewest" />
+
+    
   </ItemGroup>
 </Project>
