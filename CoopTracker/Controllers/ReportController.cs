@@ -8,17 +8,29 @@ namespace CoopTracker.Controllers;
 
 public class ReportController : ControllerBase42
 {
-
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly CoopTrackerDbContext _context;
-    public ReportController(CoopTrackerDbContext context)
+    public ReportController(CoopTrackerDbContext context, IWebHostEnvironment hostingEnvironment)
     {
         _context = context;
+        _hostingEnvironment = hostingEnvironment;
+
+       
     }
 
     // Method to replace placeholders and fit the text as needed
     public IActionResult GenerateDocx(int? Trackers)
     {
         string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
+
+       // var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "GeneratedDocuments", file.FileName);
+
+        //using (var stream = new FileStream(filePath, FileMode.Create))
+        //{
+        //    file.CopyTo(stream);
+        //}
+
+
         string outputFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", "GeneratedDoc.docx");
         var track = _context.Trackers.FirstOrDefault(e => e.TrackerId == Trackers);
         var student = _context.Students.FirstOrDefault(e => e.StudentId == StudentId);
@@ -73,10 +85,10 @@ public class ReportController : ControllerBase42
                 {
                     using (var stream = new MemoryStream(proffApply.Image))
                     {
-                        var image=document.AddImage(stream, proffApply.FileType);
-                        Picture pic = image.CreatePicture(400, 400);
+                        //var image=document.AddImage(stream, proffApply.FileType);
+                        //Picture pic = image.CreatePicture(400, 400);
                         //pa.AppendPicture(pic);
-                        document.InsertParagraph().AppendPicture(pic);
+                       // document.InsertParagraph().AppendPicture(pic);
                     }
                 }
             }

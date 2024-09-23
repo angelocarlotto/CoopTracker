@@ -17,12 +17,12 @@ public class LoginController : ControllerBase42
     }
     public async Task<IActionResult> Index(string? TenantSecret)
     {
-      // TenantId = "DOTZB0WFNK";
+       //TenantId = "DOTZB0WFNK";
 
-        if (string.IsNullOrWhiteSpace(TenantId))
-            return View(new LoginModel { TenantSecret = string.IsNullOrWhiteSpace(TenantSecret) ? GenerateRandomString(10) : TenantSecret });
+        if (string.IsNullOrWhiteSpace(TenantId)&& string.IsNullOrEmpty(TenantSecret))
+            return View(new LoginModel { TenantSecret = GenerateRandomString(10) });
         else
-            return RedirectToAction(actionName: "Login", routeValues: new { TenantSecret = TenantId});
+            return RedirectToAction(actionName: "Login", routeValues: new { TenantSecret = string.IsNullOrEmpty(TenantSecret)? TenantId: TenantSecret });
     }
     public async Task<IActionResult> Logout()
     {
