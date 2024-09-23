@@ -21,17 +21,17 @@ public class ReportController : ControllerBase42
     // Method to replace placeholders and fit the text as needed
     public IActionResult GenerateDocx(int? Trackers)
     {
-        string templatePath = Path.Combine("app",Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
+        string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
 
-       // var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "GeneratedDocuments", file.FileName);
+        // var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "GeneratedDocuments", file.FileName);
 
         //using (var stream = new FileStream(filePath, FileMode.Create))
         //{
         //    file.CopyTo(stream);
         //}
 
-
-        string outputFile = Path.Combine("app",Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", "GeneratedDoc.docx");
+        var fileName = "GeneratedDoc_"+TenantId+".docx";
+        string outputFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", fileName);
         var track = _context.Trackers.FirstOrDefault(e => e.TrackerId == Trackers);
         var student = _context.Students.FirstOrDefault(e => e.StudentId == StudentId);
         var trackees = _context.Trackees.Include(e => e.ProffApply)
@@ -98,7 +98,7 @@ public class ReportController : ControllerBase42
         document.SaveAs(outputFile);
 
         // Return the document as a file download
-        return File(System.IO.File.ReadAllBytes(outputFile), "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "GeneratedDoc.docx");
+        return File(System.IO.File.ReadAllBytes(outputFile), "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
     }
 
 
