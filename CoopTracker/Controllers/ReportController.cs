@@ -85,10 +85,10 @@ public class ReportController : ControllerBase42
                 {
                     using (var stream = new MemoryStream(proffApply.Image))
                     {
-                        //var image=document.AddImage(stream, proffApply.FileType);
-                        //Picture pic = image.CreatePicture(400, 400);
-                        //pa.AppendPicture(pic);
-                       // document.InsertParagraph().AppendPicture(pic);
+                        var image=document.AddImage(stream, proffApply.FileType);
+                        Picture pic = image.CreatePicture(400, 400);
+                        pa.AppendPicture(pic);
+                        document.InsertParagraph().AppendPicture(pic);
                     }
                 }
             }
