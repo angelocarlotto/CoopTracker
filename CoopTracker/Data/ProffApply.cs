@@ -146,6 +146,7 @@ public static class ProffApplyExtension
                 //ProffApplyId = someid,
                 obj.Image = memoryStream.ToArray();
             }
+           
         }
         return obj;
     }

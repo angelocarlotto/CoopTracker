@@ -24,7 +24,7 @@ public class ProffApplyController : Controller
     // GET: ProffApply
     public async Task<IActionResult> Index(int? trackeeId)
     {
-        var modelView = new ProffApplyModelIndex() { TrackeeId= trackeeId };
+        var modelView = new ProffApplyModelIndex() { TrackeeId = trackeeId };
         modelView.ProffApplyModelUpdateList = await _context.ProffApplys.Where(e => e.TrackeeId == trackeeId).Select(e => e.ToUpdateViewModel()).ToListAsync();
         modelView.TrackerId = trackeeId;
         return View(modelView);
@@ -61,13 +61,21 @@ public class ProffApplyController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("ProffApplyId,TenantId,TrackeeId,Image,Description")] ProffApplyModelCreate proffApply)
     {
+        if (proffApply.Image != null && proffApply.Image.Length > 512 * 1024)
+        {
+            ModelState.AddModelError("Image", "File exceed permited size!! Size must be less than 0.5MB");
+        }
+        if (proffApply.Image != null && !proffApply.Image.ContentType.ToLower().Contains("image"))
+        {
+            ModelState.AddModelError("Image", "File file type must be an Image! Nothing else!");
+        }
         if (ModelState.IsValid)
         {
             var file = proffApply.ToCreateEntity();
             _context.ProffApplys.Add(file);
             await _context.SaveChangesAsync();
             var viewmodel = file.ToCreateViewModel();
-            return RedirectToAction("Index", "ProffApply", new { trackeeId = proffApply.TrackeeId});
+            return RedirectToAction("Index", "ProffApply", new { trackeeId = proffApply.TrackeeId });
         }
         return View(proffApply);
     }
@@ -96,6 +104,17 @@ public class ProffApplyController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("ProffApplyId,TenantId,Image,Description,TrackeeId")] ProffApplyModelUpdate proffApply)
     {
+
+        if (proffApply.Image!=null&&proffApply.Image.Length > 512 * 1024)
+        {
+            ModelState.AddModelError("Image", "File exceed permited size!! Size must be less than 0.5MB");
+        }
+        if (proffApply.Image != null && !proffApply.Image.ContentType.ToLower().Contains("image"))
+        {
+            ModelState.AddModelError("Image", "File file type must be an Image! Nothing else!");
+        }
+
+
         if (id != proffApply.ProffApplyId)
         {
             return NotFound();
@@ -109,7 +128,7 @@ public class ProffApplyController : Controller
 
                 var entry = proffApply.ToUpdateEntity();
 
-                
+
                 _context.Entry(toBeUpdatedProffApply).CurrentValues.SetValues(entry);
 
                 _context.Entry(toBeUpdatedProffApply).Property(nameof(toBeUpdatedProffApply.Image)).IsModified = proffApply.Image != null;
@@ -130,7 +149,7 @@ public class ProffApplyController : Controller
                     throw;
                 }
             }
-            
+
             return RedirectToAction("Index", "ProffApply", new { trackeeId = proffApply.TrackeeId });
         }
         return View(proffApply);

@@ -15,94 +15,101 @@ public class ReportController : ControllerBase42
         _context = context;
         _hostingEnvironment = hostingEnvironment;
 
-       
+
     }
 
     // Method to replace placeholders and fit the text as needed
     public IActionResult GenerateDocx(int? Trackers)
     {
-        string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
+        if (Trackers == null)
+            ModelState.AddModelError("Trackers", "Select one tracker!");
+        if (ModelState.IsValid)
+        {
+            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "Template2.docx");
 
-        // var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "GeneratedDocuments", file.FileName);
 
-        //using (var stream = new FileStream(filePath, FileMode.Create))
-        //{
-        //    file.CopyTo(stream);
-        //}
+            var fileName = "GeneratedDoc_" + TenantId + ".docx";
+            string outputFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", fileName);
+            var track = _context.Trackers.FirstOrDefault(e => e.TrackerId == Trackers);
+            var student = _context.Students.FirstOrDefault(e => e.StudentId == StudentId);
+            var trackees = _context.Trackees.Include(e => e.ProffApply)
+                                             .Where(e => e.StudentId == StudentId && e.TrackerId == Trackers)
+                                             .ToList();
 
-        var fileName = "GeneratedDoc_"+TenantId+".docx";
-        string outputFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "GeneratedDocuments", fileName);
+            // Create a new document from the template
+            var document = DocX.Load(templatePath);
+
+
+            document.ReplaceText("{JobTracker}", track.Description);
+
+            document.ReplaceText("{Program}", student.Program.ToString());
+            document.ReplaceText("{Name}", student.ToString());
+            document.ReplaceText("{ActualSemester}", student.ActualSemester);
+            document.ReplaceText("{CoopSemester}", student.CoopSemester);
+
+            // Handle additional trackees information
+            foreach (var trackee in trackees)
+            {
+                foreach (var table in document.Tables.Skip(1))
+                {
+                    var rows = table.Rows.Skip(1).Zip(trackees, (r, t) => new { row = r, trackee = t });
+                    foreach (var obj in rows)
+                    {
+                        foreach (var cell in obj.row.Cells)
+                        {
+                            foreach (var paragraph in cell.Paragraphs)
+                            {
+
+                                paragraph.ReplaceText("{CompanyName}", obj.trackee.CompanyName);
+                                paragraph.ReplaceText("{CompanyCity}", obj.trackee.CompanyCity);
+                                paragraph.ReplaceText("{JobTitle}", obj.trackee.JobTitle);
+                                paragraph.ReplaceText("{DateApplication}", obj.trackee.DateAppliation.ToShortDateString());
+                                paragraph.ReplaceText("{ProvidedDocuments}", obj.trackee.DocumentProvided);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Add images and titles
+            foreach (var trackee in trackees)
+            {
+
+                var pa = document.InsertParagraph(trackee.JobTitle);
+
+                foreach (var proffApply in trackee.ProffApply)
+                {
+                    if (proffApply.Image != null)
+                    {
+                        using (var stream = new MemoryStream(proffApply.Image))
+                        {
+                            var image = document.AddImage(stream, proffApply.FileType);
+                            Picture pic = image.CreatePicture(400, 400);
+                            pa.AppendPicture(pic);
+                            document.InsertParagraph().AppendPicture(pic);
+                        }
+                    }
+                }
+            }
+
+            document.SaveAs(outputFile);
+            return File(System.IO.File.ReadAllBytes(outputFile), "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    public IActionResult Report(int? Trackers)
+    {
         var track = _context.Trackers.FirstOrDefault(e => e.TrackerId == Trackers);
         var student = _context.Students.FirstOrDefault(e => e.StudentId == StudentId);
         var trackees = _context.Trackees.Include(e => e.ProffApply)
                                          .Where(e => e.StudentId == StudentId && e.TrackerId == Trackers)
                                          .ToList();
 
-        // Create a new document from the template
-        var document = DocX.Load(templatePath);
-
-
-        document.ReplaceText("{JobTracker}", track.Description);
-
-        document.ReplaceText("{Program}", student.Program.ToString());
-        document.ReplaceText("{Name}", student.ToString());
-        document.ReplaceText("{ActualSemester}", student.ActualSemester);
-        document.ReplaceText("{CoopSemester}", student.CoopSemester);
-
-        // Handle additional trackees information
-        foreach (var trackee in trackees)
-        {
-            foreach (var table in document.Tables.Skip(1))
-            {
-                var rows = table.Rows.Skip(1).Zip(trackees, (r, t) => new { row = r, trackee = t });
-                foreach (var obj in rows)
-                {
-                    foreach (var cell in obj.row.Cells)
-                    {
-                        foreach (var paragraph in cell.Paragraphs)
-                        {
-                            
-                            paragraph.ReplaceText("{CompanyName}", obj.trackee.CompanyName);
-                            paragraph.ReplaceText("{CompanyCity}", obj.trackee.CompanyCity);
-                            paragraph.ReplaceText("{JobTitle}", obj.trackee.JobTitle);
-                            paragraph.ReplaceText("{DateApplication}", obj.trackee.DateAppliation.ToShortDateString());
-                            paragraph.ReplaceText("{ProvidedDocuments}", obj.trackee.DocumentProvided);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Add images and titles
-        foreach (var trackee in trackees)
-        {
-            
-           var pa= document.InsertParagraph(trackee.JobTitle);
-
-            foreach (var proffApply in trackee.ProffApply)
-            {
-                if (proffApply.Image != null)
-                {
-                    using (var stream = new MemoryStream(proffApply.Image))
-                    {
-                        var image=document.AddImage(stream, proffApply.FileType);
-                        Picture pic = image.CreatePicture(400, 400);
-                        pa.AppendPicture(pic);
-                        document.InsertParagraph().AppendPicture(pic);
-                    }
-                }
-            }
-        }
-
-        // Save the document
-        document.SaveAs(outputFile);
-
-        // Return the document as a file download
-        return File(System.IO.File.ReadAllBytes(outputFile), "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+        return View(new ReportHTMLModel { Student = student, Trackers = track, Trackee = trackees });
     }
-
-
-
     public async Task<IActionResult> Index(string? TenantSecret)
     {
 

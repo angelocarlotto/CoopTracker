@@ -38,9 +38,11 @@
     <Folder Include="Views\Report\" />
     <Folder Include="Templates\" />
     <Folder Include="wwwroot\GeneratedDocuments\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\GeneratedDocuments\" />
+    <Content Remove="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

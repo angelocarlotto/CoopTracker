@@ -17,18 +17,19 @@ public class LoginController : ControllerBase42
     }
     public async Task<IActionResult> Index(string? TenantSecret)
     {
-       //TenantId = "DOTZB0WFNK";
-
-        if (string.IsNullOrWhiteSpace(TenantId)&& string.IsNullOrEmpty(TenantSecret))
+#if DEBUG
+        TenantId = "DOTZB0WFNK";
+#endif
+        if (string.IsNullOrWhiteSpace(TenantId) && string.IsNullOrEmpty(TenantSecret))
             return View(new LoginModel { TenantSecret = GenerateRandomString(10) });
         else
-            return RedirectToAction(actionName: "Login", routeValues: new { TenantSecret = string.IsNullOrEmpty(TenantSecret)? TenantId: TenantSecret });
+            return RedirectToAction(actionName: "Login", routeValues: new { TenantSecret = string.IsNullOrEmpty(TenantSecret) ? TenantId : TenantSecret });
     }
     public async Task<IActionResult> Logout()
     {
 
         CleanSession();
-         return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Home");
     }
     //[HttpPost]
     public async Task<IActionResult> Login([Bind("TenantSecret")] string TenantSecret)
@@ -36,7 +37,7 @@ public class LoginController : ControllerBase42
         TenantId = TenantSecret;
 
         var studentAux = _context.Students.IgnoreQueryFilters().FirstOrDefault(e => e.TenantId == TenantId);
-        var student = studentAux == null ? new Student() { ActualSemester="--" ,CoopSemester= "",Email = "----", FirstName = "", LastName = "", StudentGeorgianCoolegeId = "", TenantId = TenantId } : studentAux;
+        var student = studentAux == null ? new Student() { ActualSemester = "--", CoopSemester = "", Email = "----", FirstName = "", LastName = "", StudentGeorgianCoolegeId = "", TenantId = TenantId } : studentAux;
         if (student.StudentId == 0)
         {
             _context.Add(student);

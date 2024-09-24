@@ -1,0 +1,29 @@
+﻿* {
+    padding:0;
+    border:0;
+}
+body {
+    justify-items: center;
+    width: 80%;
+    margin: 0 auto;
+    padding-top :1em;
+}
+
+table, td,th {
+    border: ridge;
+    border-color:gray;
+    border-width: 0.01em
+    
+}
+
+h1 {
+    text-align:center;
+}
+strong {
+    text-decoration:underline;
+}
+
+td>img {
+
+    width:40em;
+}

@@ -1,0 +1,106 @@
+﻿@model ReportHTMLModel
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = Model.Trackers.Description;
+    Layout = "";
+}
+<title>@ViewData["Title"]</title>
+<link rel="stylesheet" href="~/css/report.css">
+<div>
+    <img src="../images/logo.png" width="300" alt="logo" />
+    <h1> <strong> Co-op Job Tracker:</strong> <small> @Model.Trackers.Description</small></h1>
+
+    <table>
+        <tr>
+            <td>
+                <strong> Student Name + Student ID:</strong>  @Model.Student.ToString()
+            </td>
+            <td>
+                <strong> Program:</strong>  @Model.Student.Program.ToString()
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong> Current Semester:</strong> 3rd semester(fall 2024)
+            </td>
+            <td>
+                <strong>  Which Semester Is Your Co-op (month & year):</strong> 4th semeter(winter 2025)
+            </td>
+        </tr>
+    </table>
+    <p>
+
+        Students should update this document regularly to track which companies you have applied to and how your application is progressing. You will need to upload this on the Co-op Prep Course on Blackboard.
+
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Company and Location of Role
+
+                </th>
+                <th>
+
+                    Job Title
+                </th>
+                <th>
+                    Date of Application and Documents Provided (e.g. resume, cover letter, transcripts
+                    etc.)
+                </th>
+                <th>
+                    Last Update (and date)
+                    (Offer, Interview, Rejected, No Response)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trakke in Model.Trackee)
+            {
+
+                <tr>
+                    <td>   @trakke.CompanyName - @trakke.CompanyCity </td>
+                    <td><a href="@trakke.UrlLink" target="_blank">	@trakke.JobTitle </a></td>
+                    <td>
+                        @trakke.DateAppliation.ToShortDateString() @trakke.DocumentProvided
+                    </td>
+
+                    <td>
+                        ---
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+    <h1> <strong> PROOF OF APPLICATION</strong></h1>
+    <p>
+        Please send proof of application, such as a print screen directly from the company's website or the email received proving that your application was successful.
+    </p>
+
+    @foreach (var trakke in Model.Trackee)
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>@trakke.JobTitle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prodd in trakke.ProffApply.Select(e=>e.ToUpdateViewModel()))
+                {
+                    <tr>
+                        <td>
+                            <img src="@prodd.UserPicture" alt="proff" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

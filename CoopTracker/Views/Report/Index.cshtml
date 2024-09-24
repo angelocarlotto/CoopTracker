@@ -9,11 +9,26 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
+        <h1>.DOCX</h1>
         <form asp-action="GenerateDocx">
             <select asp-for="Trackers" asp-items="@Model.ListOfTraker"></select>
             <div class="form-group">
                 <input type="submit" value="Generate Report" class="btn btn-primary" />
+                @Html.ValidationSummary()
+            </div>
+        </form>
+
+
+    </div>
+
+    <div class="col-md-12">
+        <h1>HTML</h1>
+        <form asp-action="Report" target="_blank">
+            <select asp-for="Trackers" asp-items="@Model.ListOfTraker"></select>
+            <div class="form-group">
+                <input type="submit" value="Generate Report" class="btn btn-primary" />
+                @Html.ValidationSummary()
             </div>
         </form>
     </div>
