@@ -14,15 +14,36 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="TenantSecret" class="control-label"></label>
-                <input asp-for="TenantSecret" class="form-control" /> <p class="text-danger"> << -- Please Save this Key future, this is your individual identification on the system!!! </p>
+                <input asp-for="TenantSecret" class="form-control" id="step001" /> <p class="text-danger"> << -- Please Save this Key future, this is your individual identification on the system!!! </p>
                 <p class="text-danger">
-                    Next time you can access your informations by accessing:<a href="@(HttpContextAccessor.HttpContext.Request.Scheme+"://"+HttpContextAccessor.HttpContext.Request.Host)?TenantSecret=@Model.TenantSecret"> @(HttpContextAccessor.HttpContext.Request.Host)?TenantSecret=@Model.TenantSecret</a>
+                    Next time you can access your informations by accessing:<a id="step002"  href="@(HttpContextAccessor.HttpContext.Request.Scheme+"://"+HttpContextAccessor.HttpContext.Request.Host)?TenantSecret=@Model.TenantSecret"> @(HttpContextAccessor.HttpContext.Request.Host)?TenantSecret=@Model.TenantSecret</a>
                 </p>
                 <span asp-validation-for="TenantSecret" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
+                <input type="submit" value="Login" class="btn btn-primary"  id="step003"/>
             </div>
         </form>
     </div>
 </div>
+
+
+<script defer>var tour = introJs().setOptions({
+        steps: [
+            { intro: "Welcome to CoopTracker app! Next will follow a tour on this page!" },
+            { element: '#step001', intro: "This application uses a unic key to do authentication, there is no login nor password. So keep this kay save! This key can be customized!" },
+        { element: '#step002', intro: "You can access this system using this URL with your own Tenant Secrete, keep it safe!" },
+        { element: '#step003', intro: "Once you are done, click on login!" },
+        ]
+    });
+    tour.onexit(() => {
+        document.cookie = "tour_login=true";
+    })
+    tour.oncomplete(() => {
+        document.cookie = "tour_login=true";
+    })
+    tour.onskip(() => {
+        document.cookie = "tour_login=true";
+    })
+    if (document.cookie.indexOf("tour_login=true") < 0)
+        tour.start();</script>

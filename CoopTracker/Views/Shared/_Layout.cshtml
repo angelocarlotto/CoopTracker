@@ -9,15 +9,17 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CoopTracker.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script>var tour = null;</script>
 </head>
 <body>
 
 
     <header>
 
-        @if (!string.IsNullOrWhiteSpace(HttpContextAccessor.HttpContext.Session.GetString("TenantId")))
-        {
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+       
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" id="step0">
                 <div class="container-fluid">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CoopTracker</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,31 +27,50 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
+                        @if (!string.IsNullOrWhiteSpace(HttpContextAccessor.HttpContext.Session.GetString("TenantId")))
+                        {
+                            <ul class="navbar-nav flex-grow-1">
 
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                                    @HttpContextAccessor.HttpContext.Session.GetString("TenantId") | @HttpContextAccessor.HttpContext.Session.GetString("studentName") | @HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")
-                                </a>
-                            </li>
+                                <li class="nav-item" id="step01">
+                                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                                        @HttpContextAccessor.HttpContext.Session.GetString("TenantId") | @HttpContextAccessor.HttpContext.Session.GetString("studentName") | @HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")
+                                    </a>
+                                </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Trackee" asp-action="Index" asp-route-trakerId="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")">Trackee <sup>@HttpContextAccessor.HttpContext.Session.GetInt32("UserSelectedTrackerTrakeeCount").GetValueOrDefault(0)</sup></a>
-                            </li>
+                                <li class="nav-item" id="step02">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Trackee" asp-action="Index" asp-route-trakerId="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")">Trackee <sup>@HttpContextAccessor.HttpContext.Session.GetInt32("UserSelectedTrackerTrakeeCount").GetValueOrDefault(0)</sup></a>
+                                </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Report</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav">
-                            <li class="nav-item ">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
+                                <li class="nav-item" id="step03">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Report</a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav">
+                                <li class="nav-item ">
+                                    <a class="nav-link text-dark" id="tourBtn">Tour</a>
+                                </li>
+                                <li class="nav-item " id="step04">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="navbar-nav flex-grow-1">
+
+                            </ul>
+
+
+                                <ul class="navbar-nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link text-dark" id="tourBtn">Tour</a>
+                                    </li>
+                                </ul>
+                                }
+                        </div>
                 </div>
             </nav>
-        }
+        
     </header>
 
     <div class="container">
@@ -66,6 +87,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        if(tour==null)
+            document.getElementById("tourBtn").style.display = "none"
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
