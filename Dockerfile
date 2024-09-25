@@ -16,6 +16,7 @@ RUN dotnet publish -a $TARGETARCH --no-restore -o /app
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 ENV DefaultConnection="Server=6.tcp.ngrok.io,19781;Database=CoopTrackerDb;User Id=sa;Password=123456@toronto;TrustServerCertificate=True"
+ENV ASPNETCORE_ENVIRONMENT=Development
 EXPOSE 8080
 WORKDIR /app
 COPY --from=build /app .
