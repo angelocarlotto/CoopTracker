@@ -2,6 +2,7 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,65 +13,86 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
     <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
     <script>var tour = null;</script>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NTPS2GZG');</script>
+    <!-- End Google Tag Manager -->
 </head>
-<body>
 
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTPS2GZG" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <header>
 
-       
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" id="step0">
-                <div class="container-fluid">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CoopTracker</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        @if (!string.IsNullOrWhiteSpace(HttpContextAccessor.HttpContext.Session.GetString("TenantId")))
-                        {
-                            <ul class="navbar-nav flex-grow-1">
 
-                                <li class="nav-item" id="step01">
-                                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                                        @HttpContextAccessor.HttpContext.Session.GetString("TenantId") | @HttpContextAccessor.HttpContext.Session.GetString("studentName") | @HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")
-                                    </a>
-                                </li>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+            id="step0">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CoopTracker</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    @if (!string.IsNullOrWhiteSpace(HttpContextAccessor.HttpContext.Session.GetString("TenantId")))
+                    {
+                        <ul class="navbar-nav flex-grow-1">
 
-                                <li class="nav-item" id="step02">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Trackee" asp-action="Index" asp-route-trakerId="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")">Trackee <sup>@HttpContextAccessor.HttpContext.Session.GetInt32("UserSelectedTrackerTrakeeCount").GetValueOrDefault(0)</sup></a>
-                                </li>
+                            <li class="nav-item" id="step01">
+                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                                    @HttpContextAccessor.HttpContext.Session.GetString("TenantId") |
+                                    @HttpContextAccessor.HttpContext.Session.GetString("studentName") |
+                                    @HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")
+                                </a>
+                            </li>
 
-                                <li class="nav-item" id="step03">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Report</a>
-                                </li>
-                            </ul>
-                            <ul class="navbar-nav">
-                                <li class="nav-item ">
-                                    <a class="nav-link text-dark" id="tourBtn">Tour</a>
-                                </li>
-                                <li class="nav-item " id="step04">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
-                                </li>
-                            </ul>
-                        }
-                        else
-                        {
-                            <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item" id="step02">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Trackee" asp-action="Index"
+                                    asp-route-trakerId="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")">Trackee
+                                    <sup>@HttpContextAccessor.HttpContext.Session.GetInt32("UserSelectedTrackerTrakeeCount").GetValueOrDefault(0)</sup></a>
+                            </li>
 
-                            </ul>
+                            <li class="nav-item" id="step03">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Report"
+                                    asp-action="Index">Report</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item ">
+                                <a class="nav-link text-dark" id="tourBtn">Tour</a>
+                            </li>
+                            <li class="nav-item " id="step04">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Login"
+                                    asp-action="Logout">Logout</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+
+                        </ul>
 
 
-                                <ul class="navbar-nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link text-dark" id="tourBtn">Tour</a>
-                                    </li>
-                                </ul>
-                                }
-                        </div>
+                        <ul class="navbar-nav">
+                            <li class="nav-item ">
+                                <a class="nav-link text-dark" id="tourBtn">Tour</a>
+                            </li>
+                        </ul>
+                    }
                 </div>
-            </nav>
-        
+            </div>
+        </nav>
+
     </header>
 
     <div class="container">
@@ -88,10 +110,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        if(tour==null)
+        if (tour == null)
             document.getElementById("tourBtn").style.display = "none"
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-</html>
 
+</html>
