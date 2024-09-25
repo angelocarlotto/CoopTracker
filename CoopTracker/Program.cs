@@ -6,8 +6,9 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+//builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseSqlServer( builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseSqlServer(string.IsNullOrEmpty(connectionString) ? builder.Configuration.GetConnectionString("DefaultConnection") : connectionString));
 
 
 builder.Services.AddDistributedMemoryCache();
