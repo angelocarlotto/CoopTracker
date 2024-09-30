@@ -1,8 +1,11 @@
+
 This is a side project in ASP.NET core, using Entity Framework and CSharp.
 
 This system is meant to help students traking theyer job aplication to COOP period.
 
 On this system you can store your applicatino information, to keep it on track and after you can generate a report to be submit.
+
+A live version of the system can be accessed here: cooptracker.angelocarlotto.com.br
 
 Login Screen:
 
