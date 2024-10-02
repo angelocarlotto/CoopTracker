@@ -12,7 +12,7 @@ public class ControllerBase42 : Controller
     public int StudentId { get { return HttpContext.Session.GetInt32("studentId").Value; } set { HttpContext.Session.SetInt32("studentId", value); } }
     public string StudentName { get { return HttpContext.Session.GetString("studentName"); } set { HttpContext.Session.SetString("studentName", value); } }
 
-    public int trackerId { get { return HttpContext.Session.GetInt32("trackerId").Value; } set { HttpContext.Session.SetInt32("trackerId", value); } }
+    public int? trackerId { get { return HttpContext.Session.GetInt32("trackerId")==-1?null:HttpContext.Session.GetInt32("trackerId"); } set { HttpContext.Session.SetInt32("trackerId",  value==null?-1:value.Value); } }
     public string trackerDescription { get { return HttpContext.Session.GetString("trackerDescription"); } set { HttpContext.Session.SetString("trackerDescription", value); } }
 
     public string TenantId { get { return HttpContext.Session.GetString("TenantId"); } set { HttpContext.Session.SetString("TenantId", value); } }

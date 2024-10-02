@@ -30,7 +30,7 @@ public class HomeController : ControllerBase42
                 UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
             }
         }
-        return View(new IndexModel { Students = students, Trackers = tracker, TenantId = this.TenantId, TrackerIdCalculatedBySystem = currentTracker.TrackerId });
+        return View(new IndexModel { Students = students, Trackers = tracker, TenantId = this.TenantId, TrackerIdCalculatedBySystem = currentTracker?.TrackerId });
     }
 
 

@@ -26,7 +26,7 @@ public class TenantMiddleware
 
 public interface ITenantBaseEntity
 {
-    public  string TenantId { get; set; }
+    public string TenantId { get; set; }
 }
 
 
@@ -36,8 +36,8 @@ public partial class CoopTrackerDbContext : DbContext
     private readonly string _tenantId;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
-   // public CoopTrackerDbContext() { }
-   // public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options) : base(options) { }
+    // public CoopTrackerDbContext() { }
+    // public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options) : base(options) { }
     public CoopTrackerDbContext(DbContextOptions<CoopTrackerDbContext> options, IHttpContextAccessor httpContextAccessor)
        : base(options)
     {
@@ -54,7 +54,11 @@ public partial class CoopTrackerDbContext : DbContext
     public virtual DbSet<Tracker> Trackers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#if DATABASE_PGSQL
+        => optionsBuilder.UseNpgsql("Name=DefaultConnectionPSQL");
+#else
         => optionsBuilder.UseSqlServer("Name=DefaultConnection");
+#endif
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

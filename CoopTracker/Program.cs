@@ -1,14 +1,22 @@
-﻿using System.Configuration;
+﻿
+
+using System.Configuration;
 using CoopTracker;
 using CoopTracker.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
-//builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseSqlServer( builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseSqlServer(string.IsNullOrEmpty(connectionString) ? builder.Configuration.GetConnectionString("DefaultConnection") : connectionString));
+#if DATABASE_PGSQL
+var connectionString = Environment.GetEnvironmentVariable("DefaultConnectionPSQL");
+builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionPSQL")));
+#else
+    var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+    builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseSqlServer(string.IsNullOrEmpty(connectionString) ? builder.Configuration.GetConnectionString("DefaultConnection") : connectionString));
+#endif
+
 
 
 builder.Services.AddDistributedMemoryCache();

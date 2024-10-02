@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Data\" />
@@ -52,4 +53,7 @@
 
     
   </ItemGroup>
+  <PropertyGroup>
+  <DefineConstants>DATABASE_PGSQL</DefineConstants>
+</PropertyGroup>
 </Project>

@@ -3,8 +3,8 @@ using System;
 using CoopTracker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,40 +18,40 @@ namespace CoopTracker.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CoopTracker.ProffApply", b =>
                 {
                     b.Property<int>("ProffApplyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProffApplyId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProffApplyId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FileType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("TrackeeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("ProffApplyId");
 
@@ -64,40 +64,40 @@ namespace CoopTracker.Migrations
                 {
                     b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StudentId"));
 
                     b.Property<string>("ActualSemester")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CoopSemester")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Program")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("StudentGeorgianCoolegeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("StudentId");
 
@@ -108,48 +108,48 @@ namespace CoopTracker.Migrations
                 {
                     b.Property<int>("TrackeeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrackeeId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TrackeeId"));
 
                     b.Property<string>("CompanyCity")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DateAppliation")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DocumentProvided")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("JobTitle")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastUpdate")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("StudentId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("TrackerId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("UrlLink")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("TrackeeId");
 
@@ -164,26 +164,26 @@ namespace CoopTracker.Migrations
                 {
                     b.Property<int>("TrackerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrackerId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TrackerId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("Submit")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("TrackerId");
 
