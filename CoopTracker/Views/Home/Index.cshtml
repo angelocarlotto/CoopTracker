@@ -69,7 +69,8 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @(HttpContextAccessor.HttpContext.Session.GetInt32("studentId") != null&& item.StudentId ==HttpContextAccessor.HttpContext.Session.GetInt32("studentId") ? "Yes":"--")
+                    @(HttpContextAccessor.HttpContext.Session.GetInt32("studentId") != null && item.StudentId
+                        == HttpContextAccessor.HttpContext.Session.GetInt32("studentId") ? "Yes" : "--")
                 </td>
                 <td>
                     <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.StudentId">Edit</a>
@@ -83,11 +84,11 @@
 @if (Model.TenantId == Model.TenantIdAdmin)
 {
     <p>
-        <a asp-controller="Tracker" asp-action="Create">Create New</a>
-    </p>
+    <a asp-controller="Tracker" asp-action="Create">Create New</a>
+</p>
 }
-<h1>List Trackers</h1>
-
+<h1>List Trackers </h1>
+<h2>Current date and time:@IndexModel.CurrentTime</h2>
 <table class="table" id="step2">
     <thead>
         <tr>
@@ -96,6 +97,7 @@
             </th>
             <th>
                 @Html.DisplayName("End in")
+
             </th>
             <th>
                 @Html.DisplayName("Submit in")
@@ -110,22 +112,19 @@
     <tbody>
         @foreach (var item in Model.Trackers)
         {
-            <tr>
+            <tr
+                style="background-color: @(HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") != null && item.TrackerId == HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")?"#41B658":item.TrackerId== Model.TrackerIdCalculatedBySystem?"#57A3FD":"");">
                 <td>
-                    @(item.TrackerId== Model.TrackerIdCalculatedBySystem?">": "")
-                    <abbr title="@item.Start.Date">
-                        @item.Start.Date
+                    @(item.TrackerId == Model.TrackerIdCalculatedBySystem ? ">" : "")
+                    @item.Start.ToUniversalTime()
+                </td>
+                <td>
+                    <abbr title="@item.End.ToUniversalTime()">
+                        @item.End.ToUniversalTime().Humanize(dateToCompareAgainst: IndexModel.CurrentTime)
                     </abbr>
                 </td>
                 <td>
-                    <abbr title="@item.End.Date">
-                        @item.End.Date.Humanize()
-                    </abbr>
-                </td>
-                <td>
-                    <abbr title="@item.Submit.Date">
-                        @item.Submit.Date
-                    </abbr>
+                    @item.Submit.ToUniversalTime()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
@@ -134,13 +133,15 @@
                     @item.Trackee.Count()
                 </td>
                 <td class="step4">
-                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") != null && item.TrackerId == HttpContextAccessor.HttpContext.Session.GetInt32("trackerId"))
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("trackerId") != null && item.TrackerId ==
+                   HttpContextAccessor.HttpContext.Session.GetInt32("trackerId"))
                     {
                         <label>Yes</label>
                     }
                     else
                     {
-                        <a asp-controller="Tracker" asp-action="Select" asp-route-id="@item.TrackerId">@(item.TrackerId== Model.TrackerIdCalculatedBySystem?"Select Current**": "Select")</a>
+                        <a asp-controller="Tracker" asp-action="Select" asp-route-id="@item.TrackerId">@(item.TrackerId ==
+                    Model.TrackerIdCalculatedBySystem ? "Select Current**" : "Select")</a>
                     }
                     @if (Model.TenantId == item.TenantId)
                     {
@@ -183,5 +184,5 @@
     tour.onskip(() => {
         document.cookie = "tour_home=true";
     })
-    if (document.cookie.indexOf("tour_home=true")<0)
+    if (document.cookie.indexOf("tour_home=true") < 0)
         tour.start();</script>

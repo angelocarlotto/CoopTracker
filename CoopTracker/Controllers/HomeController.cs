@@ -18,9 +18,8 @@ public class HomeController : ControllerBase42
     {
         var tracker = await _context.Trackers.Include(e => e.Trackee).OrderBy(e => e.Submit).ToListAsync();
         var students = await _context.Students.ToListAsync();
-        var today = DateTime.Now;// new DateTime(2024, 10, 5);
 
-        var currentTracker = tracker.Where(e => (today >= e.Start.Date.Date && today <= e.End.Date.Date)).FirstOrDefault();
+        var currentTracker = tracker.Where(e => (IndexModel.CurrentTime >= e.Start.ToUniversalTime() && IndexModel.CurrentTime <= e.End.ToUniversalTime())).FirstOrDefault();
         if (!IsUserSelectedTracker)
         {
             if (currentTracker != null)

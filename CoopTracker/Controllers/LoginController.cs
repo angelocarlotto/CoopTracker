@@ -18,7 +18,7 @@ public class LoginController : ControllerBase42
     public async Task<IActionResult> Index(string? TenantSecret)
     {
 #if DEBUG
-        TenantId = "DOTZB0WFNK";
+        TenantId = "YTZJCBF8A8";
 #endif
         if (string.IsNullOrWhiteSpace(TenantId) && string.IsNullOrEmpty(TenantSecret))
             return View(new LoginModel { TenantSecret = GenerateRandomString(10) });

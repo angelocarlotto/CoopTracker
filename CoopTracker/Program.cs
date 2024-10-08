@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 #if DATABASE_PGSQL
 var connectionString = Environment.GetEnvironmentVariable("DefaultConnectionPSQL");
 builder.Services.AddDbContext<CoopTrackerDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionPSQL")));
