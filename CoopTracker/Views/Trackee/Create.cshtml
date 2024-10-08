@@ -46,10 +46,14 @@
                 <input asp-for="JobTitle" class="form-control" />
                 <span asp-validation-for="JobTitle" class="text-danger"></span>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="UrlLink" class="control-label"></label>
-                <input asp-for="UrlLink" class="form-control" />
+                <input asp-for="UrlLink" class="form-control" asp- />
                 <span asp-validation-for="UrlLink" class="text-danger"></span>
+
+                <div id="partialViewContainer">
+                    @*@await Html.PartialAsync("_MyPartialView", "Default Text")*@ 
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="DateAppliation" class="control-label"></label>
@@ -58,19 +62,19 @@
             </div>
             <div class="form-group">
                 <label asp-for="DocumentProvided" class="control-label"></label>
-                <input asp-for="DocumentProvided" class="form-control"  placeholder="resume, cover letter, transcript, etc"/>
+                <input asp-for="DocumentProvided" class="form-control" placeholder="resume, cover letter, transcript, etc" />
                 <span asp-validation-for="DocumentProvided" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastUpdate" class="control-label"></label>
-                <input asp-for="LastUpdate" class="form-control"  placeholder="tba"/>
+                <input asp-for="LastUpdate" class="form-control" placeholder="tba" />
                 <span asp-validation-for="LastUpdate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
             <div class="form-group">
-                @Html.ValidationSummary("Fields Validation:",htmlAttributes:new {@class= "text-danger" })
+                @Html.ValidationSummary("Fields Validation:", htmlAttributes: new { @class = "text-danger" })
             </div>
         </form>
     </div>
@@ -83,3 +87,12 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+
+    document.getElementById("UrlLink").addEventListener("change", function (event) {
+        var selectedValue = this.value;
+        $("#partialViewContainer").load('@Url.Action("GetPartialView","Trackee")?fieldValue='+selectedValue)
+    });
+
+</script>

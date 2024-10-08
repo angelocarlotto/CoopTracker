@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +16,64 @@ namespace CoopTracker.Controllers
         // GET: Trackee
         public async Task<IActionResult> Index(int? trakerId)
         {
-            return View(await _context.Trackees.Include(e=>e.ProffApply).Where(e=>e.TrackerId== this.trackerId).Include(e=>e.Student).Include(e=>e.Tracker).ToListAsync());
+            return View(await _context.Trackees.Include(e => e.ProffApply).Where(e => e.TrackerId == this.trackerId).Include(e => e.Student).Include(e => e.Tracker).ToListAsync());
+        }
+        // Action to return the partial view based on the input value
+        [HttpGet]
+        public async Task<IActionResult> GetPartialView(string fieldValue)
+        {
+            // Some logic to get data based on 'fieldValue'
+            var data = "You selected: " + fieldValue;
+
+            var trakke = _context.Trackees
+                .IgnoreQueryFilters()
+                .Include(e => e.Tracker)
+                .Select(e => new { e.TrackeeId, e.UrlLink, e.CompanyName, e.JobTitle, Tracker = e.Tracker.Description })
+                .ToList()
+                .Select(e => new SimilatiryURLPartialViewModel { Tracker = e.Tracker, TrackeeId = e.TrackeeId, similatiry = CalculateSimilarity(e.UrlLink, fieldValue), CompanyName = e.CompanyName, JobTitle = e.JobTitle, UrlLink = e.UrlLink })
+                .Where(e => e.similatiry > 80);
+
+            var yyy = trakke.OrderByDescending(e => e.similatiry).Select(e => $"Similatiry:{e.similatiry}% <a href='/Trackee/Edit/{e.TrackeeId}'> {e.Tracker} {e.JobTitle}</a>");
+            return PartialView("_SimilatiryURLPartialView", trakke); // Return partial view with data
         }
 
        
+
+        public double CalculateSimilarity(string url1, string url2)
+        {
+            url1 = url1.Replace("https", "").Replace("http", "").Replace(":", "").Replace("/", "");
+            url2 = url2.Replace("https", "").Replace("http", "").Replace(":", "").Replace("/", "");
+            int levenshteinDistance = LevenshteinDistance(url1, url2);
+            int maxLength = Math.Max(url1.Length, url2.Length);
+
+            // Similarity percentage
+            return Math.Round((1.0 - (double)levenshteinDistance / maxLength) * 100);
+        }
+
+        private int LevenshteinDistance(string s1, string s2)
+        {
+            int n = s1.Length;
+            int m = s2.Length;
+            int[,] d = new int[n + 1, m + 1];
+
+            if (n == 0) return m;
+            if (m == 0) return n;
+
+            for (int i = 0; i <= n; i++) d[i, 0] = i;
+            for (int j = 0; j <= m; j++) d[0, j] = j;
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= m; j++)
+                {
+                    int cost = (s2[j - 1] == s1[i - 1]) ? 0 : 1;
+                    d[i, j] = Math.Min(
+                        Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
+                        d[i - 1, j - 1] + cost);
+                }
+            }
+            return d[n, m];
+        }
 
         // GET: Trackee/Create
         public IActionResult Create()
@@ -50,7 +105,7 @@ namespace CoopTracker.Controllers
                 return NotFound();
             }
 
-            var trackee =  _context.Trackees.Include(e=>e.Student).Include(e=>e.Tracker).FirstOrDefault(e=>e.TrackeeId==id) ;
+            var trackee = _context.Trackees.Include(e => e.Student).Include(e => e.Tracker).FirstOrDefault(e => e.TrackeeId == id);
             if (trackee == null)
             {
                 return NotFound();
