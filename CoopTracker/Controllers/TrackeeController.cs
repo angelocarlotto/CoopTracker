@@ -91,7 +91,7 @@ namespace CoopTracker.Controllers
             {
                 _context.Add(trackee);
                 await _context.SaveChangesAsync();
-                UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
+               // UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
                 return RedirectToAction(nameof(Index));
             }
             return View(trackee);
@@ -178,7 +178,7 @@ namespace CoopTracker.Controllers
             }
 
             await _context.SaveChangesAsync();
-            UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
+            //UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
             return RedirectToAction(nameof(Index));
         }
 
