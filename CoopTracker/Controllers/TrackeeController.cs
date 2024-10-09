@@ -1,4 +1,5 @@
 using System.Linq;
+using CoopTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,7 @@ namespace CoopTracker.Controllers
             return PartialView("_SimilatiryURLPartialView", trakke); // Return partial view with data
         }
 
-       
+
 
         public double CalculateSimilarity(string url1, string url2)
         {
@@ -91,7 +92,8 @@ namespace CoopTracker.Controllers
             {
                 _context.Add(trackee);
                 await _context.SaveChangesAsync();
-               // UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
+                var trakeeCount = await _context.Trackees.Where(e => e.TrackerId == trackee.TrackerId).CountAsync();
+                UserSelectedTrackerTrakeeCount = trakeeCount;
                 return RedirectToAction(nameof(Index));
             }
             return View(trackee);
@@ -178,7 +180,8 @@ namespace CoopTracker.Controllers
             }
 
             await _context.SaveChangesAsync();
-            //UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
+            var trakeeCount = await _context.Trackees.Where(e => e.TrackerId == trackee.TrackerId).CountAsync();
+            UserSelectedTrackerTrakeeCount = trakeeCount;
             return RedirectToAction(nameof(Index));
         }
 
