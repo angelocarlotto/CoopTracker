@@ -26,7 +26,6 @@ namespace CoopTracker.Controllers
             var data = "You selected: " + fieldValue;
 
             var trakke = _context.Trackees
-                .IgnoreQueryFilters()
                 .Include(e => e.Tracker)
                 .Select(e => new { e.TrackeeId, e.UrlLink, e.CompanyName, e.JobTitle, Tracker = e.Tracker.Description })
                 .ToList()
@@ -92,6 +91,7 @@ namespace CoopTracker.Controllers
             {
                 _context.Add(trackee);
                 await _context.SaveChangesAsync();
+                UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
                 return RedirectToAction(nameof(Index));
             }
             return View(trackee);
@@ -178,6 +178,7 @@ namespace CoopTracker.Controllers
             }
 
             await _context.SaveChangesAsync();
+            UserSelectedTrackerTrakeeCount = currentTracker.Trackee.Count();
             return RedirectToAction(nameof(Index));
         }
 
