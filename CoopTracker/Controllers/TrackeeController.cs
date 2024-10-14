@@ -31,7 +31,7 @@ namespace CoopTracker.Controllers
                 .Select(e => new { e.TrackeeId, e.UrlLink, e.CompanyName, e.JobTitle, Tracker = e.Tracker.Description })
                 .ToList()
                 .Select(e => new SimilatiryURLPartialViewModel { Tracker = e.Tracker, TrackeeId = e.TrackeeId, similatiry = CalculateSimilarity(e.UrlLink, fieldValue), CompanyName = e.CompanyName, JobTitle = e.JobTitle, UrlLink = e.UrlLink })
-                .Where(e => e.similatiry > 80);
+                .Where(e => e.similatiry >85);
 
             var yyy = trakke.OrderByDescending(e => e.similatiry).Select(e => $"Similatiry:{e.similatiry}% <a href='/Trackee/Edit/{e.TrackeeId}'> {e.Tracker} {e.JobTitle}</a>");
             return PartialView("_SimilatiryURLPartialView", trakke); // Return partial view with data

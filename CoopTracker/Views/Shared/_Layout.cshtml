@@ -7,11 +7,50 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CoopTracker</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CoopTracker.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
     <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+
+        <symbol id="box-arrow-right" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+            <path fill-rule="evenodd"
+                d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+        </symbol>
+
+        <symbol id="bullseye" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-bullseye" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+            <path d="M8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10m0 1A6 6 0 1 0 8 2a6 6 0 0 0 0 12" />
+            <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8" />
+            <path d="M9.5 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+        </symbol>
+
+        <symbol id="luggage" width="16" height="16" fill="currentColor">
+            <path
+                d="M2.5 1a.5.5 0 0 0-.5.5V5h-.5A1.5 1.5 0 0 0 0 6.5v7a1.5 1.5 0 0 0 1 1.415v.335a.75.75 0 0 0 1.5 0V15H4v-1H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5V7h1v-.5A1.5 1.5 0 0 0 6.5 5H6V1.5a.5.5 0 0 0-.5-.5zM5 5H3V2h2z" />
+            <path
+                d="M3 7.5a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0zM11 6a1.5 1.5 0 0 1 1.5 1.5V8h2A1.5 1.5 0 0 1 16 9.5v5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 14.5v-5A1.5 1.5 0 0 1 6.5 8h2v-.5A1.5 1.5 0 0 1 10 6zM9.5 7.5V8h2v-.5A.5.5 0 0 0 11 7h-1a.5.5 0 0 0-.5.5M6 9.5v5a.5.5 0 0 0 .5.5H7V9h-.5a.5.5 0 0 0-.5.5m7 5.5V9H8v6zm1.5 0a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5H14v6z" />
+        </symbol>
+
+        <symbol id="clipboard2-data-fill" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-clipboard2-data-fill" viewBox="0 0 16 16">
+            <path
+                d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5" />
+            <path
+                d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585q.084.236.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5q.001-.264.085-.5M10 7a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1" />
+        </symbol>
+
+    </svg>
+
     <script>var tour = null;</script>
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
@@ -57,22 +96,54 @@
 
                             <li class="nav-item" id="step02">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Trackee" asp-action="Index"
-                                    asp-route-trakerId="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")">Trackee
+                                    asp-route-trakerId="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")"> <label>
+                                        Trackee
+                                        <svg role="img">
+                                            <use xlink:href="#bullseye" />
+                                        </svg>
+
+                                    </label>
                                     <sup>@HttpContextAccessor.HttpContext.Session.GetInt32("UserSelectedTrackerTrakeeCount").GetValueOrDefault(0)</sup></a>
                             </li>
 
                             <li class="nav-item" id="step03">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Report"
-                                    asp-action="Index">Report</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">
+                                    <label>
+                                        Report
+                                        <svg role="img">
+                                            <use xlink:href="#clipboard2-data-fill" />
+                                        </svg>
+
+                                    </label></a>
                             </li>
                         </ul>
                         <ul class="navbar-nav">
                             <li class="nav-item ">
-                                <a class="nav-link text-dark" id="tourBtn">Tour</a>
+                                <a class="nav-link text-dark" id="tourBtn">
+                                    <label>
+                                        Tour
+                                        <svg role="img">
+                                            <use xlink:href="#luggage" />
+                                        </svg>
+
+                                    </label>
+                                </a>
                             </li>
                             <li class="nav-item " id="step04">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Login"
-                                    asp-action="Logout">Logout</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">
+
+                            <li class="nav-item ">
+                                <a class="nav-link text-dark" id="tourBtn">
+                                    <label>
+                                        Logout
+                                        <svg role="img">
+                                            <use xlink:href="#box-arrow-right" />
+                                        </svg>
+
+                                    </label>
+                                </a>
+                            </li>
+                            </a>
                             </li>
                         </ul>
                     }
@@ -85,7 +156,15 @@
 
                         <ul class="navbar-nav">
                             <li class="nav-item ">
-                                <a class="nav-link text-dark" id="tourBtn">Tour</a>
+                                <a class="nav-link text-dark" id="tourBtn">
+                                    <label>
+                                        Tour
+                                        <svg role="img">
+                                            <use xlink:href="#luggage" />
+                                        </svg>
+
+                                    </label>
+                                </a>
                             </li>
                         </ul>
                     }
@@ -107,7 +186,10 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
         if (tour == null)

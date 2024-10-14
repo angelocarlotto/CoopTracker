@@ -13,8 +13,15 @@ public class HomeController : ControllerBase42
     {
         _context = context;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="customSelectTracker"></param>
+    /// <returns></returns>
     [TypeFilter(typeof(GroupHashFilter))]
-    public async Task<IActionResult> Index(bool? customSelectTracker)
+    public async Task<IActionResult> Index()
+    //public async Task<IActionResult> Index(bool? customSelectTracker)
     {
         var tracker = await _context.Trackers.Include(e => e.Trackee).OrderBy(e => e.Submit).ToListAsync();
         var students = await _context.Students.ToListAsync();
