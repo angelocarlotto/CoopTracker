@@ -27,8 +27,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="TrackerId" class="control-label"></label>
-                <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")" disabled />
-                <input asp-for="TrackerId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")" type="hidden" />
+                @* <input class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetString("trackerDescription")" disabled />
+                <input asp-for="TrackerId" class="form-control" value="@HttpContextAccessor.HttpContext.Session.GetInt32("trackerId")" type="hidden" /> *@
+                <select asp-for="TrackerId" class="form-control" asp-items="ViewBag.TrackerId"></select>
                 <span asp-validation-for="TrackerId" class="text-danger"></span>
             </div>
              <div class="form-group">

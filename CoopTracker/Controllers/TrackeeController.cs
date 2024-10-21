@@ -1,6 +1,7 @@
 using System.Linq;
 using CoopTracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoopTracker.Controllers
@@ -78,6 +79,7 @@ namespace CoopTracker.Controllers
         // GET: Trackee/Create
         public IActionResult Create()
         {
+            ViewData["TrackerId"] = new SelectList(_context.Trackers, "TrackerId", "Description", this.trackerId);
             return View();
         }
 
@@ -96,6 +98,7 @@ namespace CoopTracker.Controllers
                 UserSelectedTrackerTrakeeCount = trakeeCount;
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TrackerId"] = new SelectList(_context.Trackers, "TrackerId", "Description", trackee.TrackerId);
             return View(trackee);
         }
 
@@ -112,6 +115,7 @@ namespace CoopTracker.Controllers
             {
                 return NotFound();
             }
+            ViewData["TrackerId"] = new SelectList(_context.Trackers, "TrackerId", "Description", trackee.TrackerId);
             return View(trackee);
         }
 
@@ -147,6 +151,7 @@ namespace CoopTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TrackerId"] = new SelectList(_context.Trackers, "TrackerId", "Description", trackee.TrackerId);
             return View(trackee);
         }
 
