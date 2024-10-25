@@ -20,6 +20,21 @@ public class TenantMiddleware
             context.Session.SetString("TenantId", string.Empty);
         }
 
+          // Check if the "KeyTenant" header is present
+       else  if (context.Request.Headers.TryGetValue("TenantId", out var keyTenant))
+        {
+            // You can now use the keyTenant value as needed
+            // For example, you can set it in session
+            context.Session.SetString("TenantId", keyTenant.ToString());
+        }
+        // else
+        // {
+        //     // Handle the case where KeyTenant is missing
+        //     context.Response.StatusCode = StatusCodes.Status400BadRequest; // Bad Request
+        //     await context.Response.WriteAsync("KeyTenant header is required.");
+        //     return; // Exit the middleware chain
+        // }
+
         await _next(context);
     }
 }
