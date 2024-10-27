@@ -8,6 +8,13 @@ public class GroupHashFilter : IActionFilter
 
     public void OnActionExecuting(ActionExecutingContext context)
     {
+
+          // Skip the filter for API requests
+        if (context.HttpContext.Request.Path.StartsWithSegments("/api"))
+        {
+            return;
+        }
+        
         var TenantId = context.HttpContext.Session.GetString("TenantId");
         if (string.IsNullOrWhiteSpace(TenantId) && context.Controller.GetType() != typeof(LoginController))
         {

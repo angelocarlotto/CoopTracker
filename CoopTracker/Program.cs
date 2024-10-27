@@ -67,13 +67,15 @@ app.UseAuthorization();
 app.UseSession();
 app.UseMiddleware<TenantMiddleware>();
 
+// Map API controllers
+app.MapControllers();
+
 // Map routes for both MVC and API
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");
 
-// Map API controllers
-app.MapControllers();
+
 
 app.Run();
 

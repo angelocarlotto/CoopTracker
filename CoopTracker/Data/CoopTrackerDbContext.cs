@@ -11,29 +11,26 @@ public class TenantMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
     {
-        // Assuming TenantId is in session
-        if (context.Session.GetString("TenantId") == null)
+        // Skip middleware for API requests
+        if (context.Request.Path.StartsWithSegments("/api"))
         {
-            // Set default TenantId if not set
-            context.Session.SetString("TenantId", string.Empty);
+            await _next(context);
+            return;
         }
 
-          // Check if the "KeyTenant" header is present
-       else  if (context.Request.Headers.TryGetValue("TenantId", out var keyTenant))
+        // Check if the "TenantId" header is present
+        if (context.Request.Headers.TryGetValue("TenantId", out var keyTenant))
         {
-            // You can now use the keyTenant value as needed
-            // For example, you can set it in session
+            // If the header is present, update the session with the value from the header
             context.Session.SetString("TenantId", keyTenant.ToString());
         }
-        // else
-        // {
-        //     // Handle the case where KeyTenant is missing
-        //     context.Response.StatusCode = StatusCodes.Status400BadRequest; // Bad Request
-        //     await context.Response.WriteAsync("KeyTenant header is required.");
-        //     return; // Exit the middleware chain
-        // }
+        else if (string.IsNullOrEmpty(context.Session.GetString("TenantId")))
+        {
+            // If the session does not have a TenantId and no header is provided, set it to a default value
+            context.Session.SetString("TenantId", "default");
+        }
 
         await _next(context);
     }
