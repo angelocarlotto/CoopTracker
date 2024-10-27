@@ -24,7 +24,17 @@ namespace CoopTracker.ApiController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Tracker>>> GetTrackers()
         {
-            return await _context.Trackers.ToListAsync();
+            var trackers = await _context.Trackers
+                                          .Include(e => e.Trackee)
+                                          .OrderBy(e => e.Submit)
+                                          .ToListAsync();
+
+            if (trackers == null || trackers.Count == 0)
+            {
+                return NotFound("No trackers found.");
+            }
+
+            return Ok(trackers);
         }
 
         // GET: api/Tracker/5

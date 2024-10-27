@@ -1,6 +1,7 @@
 ﻿
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CoopTracker;
 
@@ -8,6 +9,7 @@ public class Trackee : ITenantBaseEntity
 {
     public required int TrackeeId { get; set; }
     public required int TrackerId { get; set; }
+    [JsonIgnore]
     public  Tracker? Tracker { get; set; }
     public  Student? Student { get; set; }
     [Display(Name = "Company Name")]

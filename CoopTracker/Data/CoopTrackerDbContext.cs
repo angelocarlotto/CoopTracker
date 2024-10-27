@@ -14,11 +14,11 @@ public class TenantMiddleware
         public async Task Invoke(HttpContext context)
     {
         // Skip middleware for API requests
-        if (context.Request.Path.StartsWithSegments("/api"))
-        {
-            await _next(context);
-            return;
-        }
+        // if (context.Request.Path.StartsWithSegments("/api"))
+        // {
+        //     await _next(context);
+        //     return;
+        // }
 
         // Check if the "TenantId" header is present
         if (context.Request.Headers.TryGetValue("TenantId", out var keyTenant))
