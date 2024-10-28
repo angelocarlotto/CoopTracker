@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CoopTracker;
+using NuGet.Versioning;
 
 namespace CoopTracker.ApiController
 {
@@ -43,12 +44,33 @@ namespace CoopTracker.ApiController
         {
             var tracker = await _context.Trackers.FindAsync(id);
 
+            var trackers = await _context.Trackers
+                                          .Include(e => e.Trackee)
+                                          .OrderBy(e => e.Submit)
+                                          .FirstAsync(e=>e.TrackerId==id);
+
             if (tracker == null)
             {
                 return NotFound();
             }
 
             return tracker;
+        }
+
+ // GET: api/Tracker/5/trackees
+        [HttpGet("{id}/trackees")]
+        public async Task<ActionResult<ICollection< Trackee>>> GetTrackees(int id)
+        {
+            //var tracker = await _context.Trackers.FindAsync(id);
+
+            var trackers = await  _context.Trackees.Where(e=>e.TrackerId==id).ToListAsync();
+
+            if (trackers == null)
+            {
+                return NotFound();
+            }
+
+            return trackers;
         }
 
         // PUT: api/Tracker/5
