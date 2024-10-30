@@ -16,7 +16,7 @@ public class GroupHashFilter : IActionFilter
         }
         
         var TenantId = context.HttpContext.Session.GetString("TenantId");
-        if (string.IsNullOrWhiteSpace(TenantId) && context.Controller.GetType() != typeof(LoginController))
+        if ((TenantId=="default"|| string.IsNullOrWhiteSpace(TenantId)) && context.Controller.GetType() != typeof(LoginController))
         {
             context.Result = new RedirectToActionResult("Index", "Login", null);
         }

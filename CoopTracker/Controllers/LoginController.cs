@@ -17,10 +17,10 @@ public class LoginController : ControllerBase42
     }
     public async Task<IActionResult> Index(string? TenantSecret)
     {
-#if DEBUG
-        TenantId = "YTZJCBF8A8";
-#endif
-        if (string.IsNullOrWhiteSpace(TenantId) && string.IsNullOrEmpty(TenantSecret))
+// #if DEBUG2
+//         TenantId = "YTZJCBF8A8";
+// #endif
+        if ((string.IsNullOrWhiteSpace(TenantId)||TenantId=="default") && string.IsNullOrEmpty(TenantSecret))
             return View(new LoginModel { TenantSecret = GenerateRandomString(10) });
         else
             return RedirectToAction(actionName: "Login", routeValues: new { TenantSecret = string.IsNullOrEmpty(TenantSecret) ? TenantId : TenantSecret });
